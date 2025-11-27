@@ -472,7 +472,7 @@
       
       try {
         // URL de l'API GitHub pour votre dépôt
-        const repoUrl = 'https://api.github.com/repos/ivanipote/PDF-search/contents/premium_files';
+        const repoUrl = 'https://api.github.com/repos/ivanipote/premium_search/contents/premium';
         
         const response = await fetch(repoUrl);
         
@@ -485,7 +485,7 @@
         // Construction de l'index
         fileIndex = files.map(file => {
           // URL raw pour le téléchargement direct
-          const rawUrl = `https://raw.githubusercontent.com/ivanipote/premium_search/main/premium_iles/${file.name}`;
+          const rawUrl = `https://raw.githubusercontent.com/ivanipote/premium_search/main/premium/${file.name}`;
           
           return {
             name: file.name,
