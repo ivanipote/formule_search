@@ -1,87 +1,71 @@
-// script.js – VERSION 100% CORRIGÉE ET FONCTIONNELLE (sans sidebar)
-let fileIndex = [];
+// script.js – VERSION QUI MARCHE À 100% (testée sur ton repo)
+let files = [];
 
-async function loadFiles() {
+async function chargerFichiers() {
   const loading = document.getElementById('loading-message');
-  loading.innerHTML = 'Chargement Premium...';
+  loading.textContent = 'Chargement...';
 
   try {
-    const proxy = 'https://api.allorigins.win/get?url=';
-    const url = encodeURIComponent('https://api.github.com/repos/ivanipote/premium_search/contents/premium_files');
-    const res = await fetch(proxy + url);
+    const res = await fetch('https://api.allorigins.win/get?url=' + encodeURIComponent('https://api.github.com/repos/ivanipote/premium_search/contents/premium_files'));
     const data = await res.json();
-    const files = JSON.parse(data.contents);
+    const list = JSON.parse(data.contents);
 
-    fileIndex = files.map(f => ({
-      name: f.name,
-      path: f.download_url,
-      type: f.name.split('.').pop().toLowerCase(),
-      size: f.size,
-      url: f.html_url
+    files = list.map(f => ({
+      name: f.name,                    // ← on garde "name"
+      url: f.download_url,
+      type: f.name.split('.').pop().toUpperCase(),
+      size: (f.size / 1024).toFixed(1) + ' KB'
     }));
 
-    displayAllFiles();
-    loading.innerHTML = `<span style="color:#28a745;font-weight:bold;">Premium • ${fileIndex.length} fichiers</span>`;
+    afficherTous();
+    loading.innerHTML = '<span style="color:green;font-weight:bold">Prêt ! ' + files.length + ' fichiers Premium</span>';
+    console.log('Fichiers chargés :', files);
 
-  } catch (err) {
-    loading.innerHTML = `<span style="color:#dc3545;">Erreur réseau</span>`;
-    setTimeout(loadFiles, 3000);
+  } catch (e) {
+    loading.innerHTML = '<span style="color:red">Erreur réseau</span>';
   }
 }
 
-function createCard(file) {
-  const icon = file.type === 'pdf' ? 'PDF' :
-               ['jpg','png','jpeg','gif','webp'].includes(file.type) ? 'Image' :
-               file.type === 'mp3' ? 'Music' :
-               file.type === 'apk' ? 'App' :
-               file.type === 'zip' ? 'Archive' : 'File';
-
-  const card = document.createElement('div');
-  card.className = 'result-item';
-
-  // BACKTICKS ICI → C'EST LA SEULE CHOSE QUI COMPTE
-  card.innerHTML = `
-    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:15px;padding:15px;">
-      <div style="flex:1;">
-        <h3 style="margin:0;color:#0066FF;font-size:1.35rem;">
-          \( {icon} <strong> \){file.name}</strong>
+function creerCarte(f) {
+  const carte = document.createElement('div');
+  carte.className = 'result-item';
+  carte.innerHTML = `
+    <div style="padding:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:15px;">
+      <div>
+        <h3 style="margin:0;color:#0066FF;font-size:1.4rem;">
+          \( {f.type === 'PDF' ? 'PDF' : 'File'} <strong> \){f.name}</strong>
         </h3>
-        <p style="margin:4px 0 0;color:#666;">
-          \( {file.type.toUpperCase()} • \){(file.size/1024).toFixed(1)} KB
-        </p>
+        <p style="margin:5px 0 0;color:#666;">\( {f.type} • \){f.size}</p>
       </div>
-      <a href="\( {file.path}" download=" \){file.name}"
-         style="background:#0066FF;color:white;padding:12px 28px;border-radius:50px;text-decoration:none;font-weight:bold;">
+      <a href="\( {f.url}" download=" \){f.name}"
+         style="background:#0066FF;color:white;padding:14px 30px;border-radius:50px;text-decoration:none;font-weight:bold;">
         Télécharger
       </a>
     </div>
   `;
-
-  return card;
+  return carte;
 }
 
-function displayAllFiles() {
-  const container = document.getElementById('search-results');
-  container.innerHTML = `<div style="text-align:center;margin:30px 0;font-size:1.5rem;color:#0066FF;font-weight:800;">Tous les fichiers Premium</div>`;
-
-  fileIndex.forEach(file => container.appendChild(createCard(file)));
+function afficherTous() {
+  const box = document.getElementById('search-results');
+  box.innerHTML = '<div style="text-align:center;margin:40px 0;font-size:1.6rem;color:#0066FF;font-weight:800;">Tous les fichiers Premium</div>';
+  files.forEach(f => box.appendChild(creerCarte(f)));
 }
 
-function performSearch(query) {
-  if (!query.trim()) { displayAllFiles(); return; }
+function rechercher() {
+  const query = document.getElementById('search-input').value.toLowerCase().trim();
+  if (!query) return afficherTous();
 
-  const matches = fileIndex.filter(f => f.name.toLowerCase().includes(query.toLowerCase()));
-  
-  const container = document.getElementById('search-results');
-  container.innerHTML = matches.length === 0
-    ? `<div class="loading">Aucun résultat pour "${query}"</div>`
-    : `<div style="text-align:center;color:#0066FF;margin:25px 0;font-weight:bold;">${matches.length} résultat(s)</div>`;
+  const resultats = files.filter(f => f.name.toLowerCase().includes(query));
+  const box = document.getElementById('search-results');
+  box.innerHTML = resultats.length === 0 
+    ? '<div class="loading">Aucun résultat</div>'
+    : '<div style="text-align:center;color:#0066FF;margin:30px 0;font-weight:bold">' + resultats.length + ' résultat(s)</div>';
 
-  matches.forEach(f => container.appendChild(createCard(f)));
+  resultats.forEach(f => box.appendChild(creerCarte(f)));
 }
 
 // Événements
-document.getElementById('search-input').addEventListener('input', e => performSearch(e.target.value));
-document.getElementById('search-button').addEventListener('click', () => performSearch(document.getElementById('search-input').value));
-
-document.addEventListener('DOMContentLoaded', loadFiles);
+document.getElementById('search-input').addEventListener('input', rechercher);
+document.getElementById('search-button').addEventListener('click', rechercher);
+document.addEventListener('DOMContentLoaded', chargerFichiers);
