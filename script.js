@@ -13,7 +13,7 @@ const CONFIG = {
 const sidebarToggle = document.getElementById('sidebarToggle');
 const sidebar = document.getElementById('sidebar');
 const overlay = document.getElementById('overlay');
-const header = document.querySelector('.header');
+const mainHeader = document.querySelector('.main-header');
 const searchBar = document.getElementById('searchBar');
 const pageTitle = document.querySelector('.page-title');
 const sidebarLinks = document.querySelectorAll('.sidebar-menu a');
@@ -63,7 +63,7 @@ function initNavigation() {
 }
 
 function toggleHeaderElements() {
-    const elementsToHide = [header, searchBar, pageTitle];
+    const elementsToHide = [mainHeader, searchBar, pageTitle];
     elementsToHide.forEach(element => {
         if (element) {
             if (sidebar.classList.contains('active')) {
@@ -78,7 +78,7 @@ function toggleHeaderElements() {
 }
 
 function showHeaderElements() {
-    const elementsToShow = [header, searchBar, pageTitle];
+    const elementsToShow = [mainHeader, searchBar, pageTitle];
     elementsToShow.forEach(element => {
         if (element) {
             element.style.opacity = '1';
@@ -88,17 +88,19 @@ function showHeaderElements() {
 }
 
 // =============================================
-// GESTIONNAIRE DE FICHIERS
+// GESTIONNAIRE DE FICHIERS AVEC SÉLECTION
 // =============================================
 class FileManager {
     constructor() {
         this.files = [];
+        this.selectedFile = null;
         this.init();
     }
 
     async init() {
         await this.scanGitHubFiles();
         this.detectPageAndInit();
+        this.initFileSelection();
     }
 
     // Scan automatique du dossier GitHub
@@ -118,7 +120,7 @@ class FileManager {
                     size: file.size,
                     downloadUrl: file.download_url,
                     rawUrl: `${CONFIG.RAW_BASE_URL}${file.name}`,
-                    lastModified: new Date(file.name).toLocaleDateString('fr-FR')
+                    lastModified: new Date().toLocaleDateString('fr-FR')
                 }));
             
             console.log(`${this.files.length} fichiers chargés`);
@@ -184,10 +186,134 @@ class FileManager {
                 size: 2048000,
                 rawUrl: "#", 
                 lastModified: "28/11/2024"
+            },
+            {
+                name: "fichier.txt",
+                type: "Texte",
+                size: 1024,
+                rawUrl: "#",
+                lastModified: "27/11/2024"
+            },
+            {
+                name: "app.apk",
+                type: "Application",
+                size: 5120000,
+                rawUrl: "#",
+                lastModified: "26/11/2024"
             }
         ];
     }
+
+    // Sélection de fichier
+    initFileSelection() {
+        document.addEventListener('click', (e) => {
+            const fileCard = e.target.closest('.file-card');
+            if (fileCard && !e.target.closest('.file-actions')) {
+                this.selectFile(fileCard);
+            }
+        });
+    }
+
+    selectFile(fileCard) {
+        // Désélectionner précédent
+        if (this.selectedFile) {
+            this.selectedFile.classList.remove('selected');
+        }
+        
+        // Sélectionner nouveau
+        fileCard.classList.add('selected');
+        this.selectedFile = fileCard;
+        
+        console.log('Fichier sélectionné:', fileCard.querySelector('.file-name').textContent);
+    }
 }
+
+// =============================================
+// PRÉVISUALISATION DES FICHIERS
+// =============================================
+FileManager.prototype.previewFile = function(url, type, filename) {
+    switch(type) {
+        case 'PDF':
+            this.openPDF(url);
+            break;
+        case 'Audio':
+            this.previewAudio(url, filename);
+            break;
+        case 'Image':
+            this.previewImage(url, filename);
+            break;
+        default:
+            this.downloadFile(url, filename);
+    }
+};
+
+// PDF - Ouverture externe dans le lecteur du navigateur
+FileManager.prototype.openPDF = function(url) {
+    window.open(url, '_blank');
+};
+
+// Audio - Prévisualisation avec lecteur
+FileManager.prototype.previewAudio = function(url, filename) {
+    const modal = this.createModal();
+    modal.innerHTML = `
+        <div class="preview-content">
+            <h3 style="margin-bottom: 20px;">🎵 ${filename}</h3>
+            <div class="audio-player">
+                <audio controls style="width: 300px;">
+                    <source src="${url}" type="audio/mpeg">
+                    Votre navigateur ne supporte pas l'audio.
+                </audio>
+            </div>
+            <div style="margin-top: 20px; display: flex; gap: 10px;">
+                <button class="btn btn-primary" onclick="fileManager.downloadFile('${url}', '${filename}')">
+                    📥 Télécharger
+                </button>
+                <button class="btn btn-secondary" onclick="this.closest('.preview-modal').remove()">
+                    Fermer
+                </button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+};
+
+// Image - Prévisualisation normale
+FileManager.prototype.previewImage = function(url, filename) {
+    const modal = this.createModal();
+    modal.innerHTML = `
+        <div class="preview-content">
+            <img src="${url}" alt="Preview" style="max-width: 90vw; max-height: 70vh; border-radius: 10px;">
+            <div style="margin-top: 20px; display: flex; gap: 10px;">
+                <button class="btn btn-primary" onclick="fileManager.downloadFile('${url}', '${filename}')">
+                    📥 Télécharger
+                </button>
+                <button class="btn btn-secondary" onclick="this.closest('.preview-modal').remove()">
+                    Fermer
+                </button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+};
+
+FileManager.prototype.createModal = function() {
+    const modal = document.createElement('div');
+    modal.className = 'preview-modal';
+    modal.style.cssText = `
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0,0,0,0.8); backdrop-filter: blur(10px);
+        display: flex; align-items: center; justify-content: center;
+        z-index: 10000;
+    `;
+    return modal;
+};
+
+FileManager.prototype.downloadFile = function(url, filename) {
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    link.click();
+};
 
 // =============================================
 // SYSTÈME DE RECHERCHE (index.html)
@@ -224,26 +350,42 @@ class SearchSystem {
             return;
         }
 
-        this.resultsContainer.innerHTML = files.map(file => `
-            <div class="file-card">
-                <div class="file-header">
-                    <div class="file-icon">${this.fileManager.getFileIcon(file.type)}</div>
-                    <div class="file-info">
-                        <div class="file-name">${file.name}</div>
-                        <div class="file-type">${file.type} • ${this.formatSize(file.size)}</div>
-                        <div class="file-date">Ajouté le ${file.lastModified}</div>
+        this.resultsContainer.innerHTML = files.map(file => {
+            const isPDF = file.type === 'PDF';
+            const isAudio = file.type === 'Audio';
+            
+            return `
+                <div class="file-card" data-type="${file.type}">
+                    <div class="file-header">
+                        <div class="file-icon">${this.fileManager.getFileIcon(file.type)}</div>
+                        <div class="file-info">
+                            <div class="file-name">${file.name}</div>
+                            <div class="file-type">${file.type} • ${this.formatSize(file.size)}</div>
+                            <div class="file-date">Ajouté le ${file.lastModified}</div>
+                        </div>
+                    </div>
+                    <div class="file-actions ${isAudio ? 'file-actions-compact' : ''}">
+                        ${isAudio ? `
+                            <button class="btn-play" onclick="fileManager.previewFile('${file.rawUrl}', '${file.type}', '${file.name}')">
+                                ▶
+                            </button>
+                            <button class="btn btn-primary" onclick="fileManager.downloadFile('${file.rawUrl}', '${file.name}')">
+                                📥 Télécharger
+                            </button>
+                        ` : `
+                            <button class="btn btn-primary" onclick="fileManager.previewFile('${file.rawUrl}', '${file.type}', '${file.name}')">
+                                ${isPDF ? '📖 Ouvrir' : '👁️ Ouvrir'}
+                            </button>
+                            ${!isPDF ? `
+                                <button class="btn btn-secondary" onclick="fileManager.downloadFile('${file.rawUrl}', '${file.name}')">
+                                    📥 Télécharger
+                                </button>
+                            ` : ''}
+                        `}
                     </div>
                 </div>
-                <div class="file-actions">
-                    <button class="btn btn-primary" onclick="fileManager.previewFile('${file.rawUrl}', '${file.type}')">
-                        Ouvrir
-                    </button>
-                    <button class="btn btn-secondary" onclick="fileManager.downloadFile('${file.rawUrl}', '${file.name}')">
-                        Télécharger
-                    </button>
-                </div>
-            </div>
-        `).join('');
+            `;
+        }).join('');
     }
 
     formatSize(bytes) {
@@ -255,44 +397,63 @@ class SearchSystem {
 }
 
 // =============================================
-// SYSTÈME DOSSIER (dossier.html)
+// SYSTÈME DOSSIER (dossier.html) - VERSION INTELLIGENTE
 // =============================================
 class DossierSystem {
     constructor(fileManager) {
         this.fileManager = fileManager;
-        this.filesGrid = document.getElementById('filesGrid');
+        this.filesContainer = document.getElementById('filesContainer');
         this.init();
     }
 
     init() {
-        if (this.filesGrid) {
+        if (this.filesContainer) {
             this.displayAllFiles();
         }
     }
 
     displayAllFiles() {
         if (this.fileManager.files.length === 0) {
-            this.filesGrid.innerHTML = '<p class="no-results">Aucun fichier trouvé</p>';
+            this.filesContainer.innerHTML = '<p class="no-results">Aucun fichier trouvé</p>';
             return;
         }
 
-        this.filesGrid.innerHTML = this.fileManager.files.map(file => `
-            <div class="file-card">
-                <div class="file-header">
-                    <div class="file-icon">${this.fileManager.getFileIcon(file.type)}</div>
-                    <div class="file-info">
-                        <div class="file-name">${file.name}</div>
-                        <div class="file-type">${file.type} • ${this.formatSize(file.size)}</div>
-                        <div class="file-date">Ajouté le ${file.lastModified}</div>
-                    </div>
-                </div>
-                <div class="file-actions">
-                    <button class="btn btn-primary" onclick="fileManager.previewFile('${file.rawUrl}', '${file.type}')">
-                        Ouvrir
-                    </button>
-                </div>
+        // UN SEUL RECTANGLE qui contient toutes les cartes avec passage automatique à la ligne
+        this.filesContainer.innerHTML = `
+            <div class="file-row">
+                ${this.fileManager.files.map(file => {
+                    const isPDF = file.type === 'PDF';
+                    const isAudio = file.type === 'Audio';
+                    
+                    return `
+                        <div class="file-card" data-type="${file.type}">
+                            <div class="file-header">
+                                <div class="file-icon">${this.fileManager.getFileIcon(file.type)}</div>
+                                <div class="file-info">
+                                    <div class="file-name">${file.name}</div>
+                                    <div class="file-type">${file.type} • ${this.formatSize(file.size)}</div>
+                                    <div class="file-date">Ajouté le ${file.lastModified}</div>
+                                </div>
+                            </div>
+                            <div class="file-actions ${isAudio ? 'file-actions-compact' : ''}">
+                                ${isAudio ? `
+                                    <button class="btn-play" onclick="fileManager.previewFile('${file.rawUrl}', '${file.type}', '${file.name}')">
+                                        ▶
+                                    </button>
+                                    <button class="btn btn-primary" onclick="fileManager.downloadFile('${file.rawUrl}', '${file.name}')">
+                                        📥 Télécharger
+                                    </button>
+                                ` : `
+                                    <button class="btn btn-primary" onclick="fileManager.previewFile('${file.rawUrl}', '${file.type}', '${file.name}')">
+                                        ${isPDF ? '📖 Ouvrir' : '👁️ Ouvrir'}
+                                    </button>
+                                `}
+                            </div>
+                        </div>
+                    `;
+                }).join('')}
             </div>
-        `).join('');
+        `;
     }
 
     formatSize(bytes) {
@@ -302,77 +463,6 @@ class DossierSystem {
         return Math.round(bytes / Math.pow(1024, i) * 100) / 100 + ' ' + sizes[i];
     }
 }
-
-// =============================================
-// PRÉVISUALISATION DES FICHIERS
-// =============================================
-FileManager.prototype.previewFile = function(url, type) {
-    switch(type) {
-        case 'PDF':
-            this.previewPDF(url);
-            break;
-        case 'Image':
-            this.previewImage(url);
-            break;
-        case 'Audio':
-            this.previewAudio(url);
-            break;
-        default:
-            this.downloadFile(url, 'fichier');
-    }
-};
-
-FileManager.prototype.previewPDF = function(url) {
-    // Ouvrir dans un nouvel onglet pour l'instant
-    window.open(url, '_blank');
-};
-
-FileManager.prototype.previewImage = function(url) {
-    const modal = this.createModal();
-    modal.innerHTML = `
-        <div class="preview-content">
-            <img src="${url}" alt="Preview" style="max-width: 90vw; max-height: 80vh; border-radius: 10px;">
-            <button class="btn btn-primary" onclick="this.closest('.preview-modal').remove()">Fermer</button>
-            <button class="btn btn-secondary" onclick="fileManager.downloadFile('${url}', 'image')">Télécharger</button>
-        </div>
-    `;
-    document.body.appendChild(modal);
-};
-
-FileManager.prototype.previewAudio = function(url) {
-    const modal = this.createModal();
-    modal.innerHTML = `
-        <div class="preview-content">
-            <audio controls style="width: 300px; margin: 20px 0;">
-                <source src="${url}" type="audio/mpeg">
-                Votre navigateur ne supporte pas l'audio.
-            </audio>
-            <br>
-            <button class="btn btn-primary" onclick="this.closest('.preview-modal').remove()">Fermer</button>
-            <button class="btn btn-secondary" onclick="fileManager.downloadFile('${url}', 'audio')">Télécharger</button>
-        </div>
-    `;
-    document.body.appendChild(modal);
-};
-
-FileManager.prototype.createModal = function() {
-    const modal = document.createElement('div');
-    modal.className = 'preview-modal';
-    modal.style.cssText = `
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(0,0,0,0.8); backdrop-filter: blur(10px);
-        display: flex; align-items: center; justify-content: center;
-        z-index: 10000;
-    `;
-    return modal;
-};
-
-FileManager.prototype.downloadFile = function(url, filename) {
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = filename;
-    link.click();
-};
 
 // =============================================
 // DÉTECTION DE PAGE ET INITIALISATION
