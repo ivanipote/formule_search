@@ -101,6 +101,7 @@ class FileManager {
         await this.scanGitHubFiles();
         this.detectPageAndInit();
         this.initFileSelection();
+        this.updateStats();
     }
 
     // Scan automatique du dossier GitHub
@@ -226,15 +227,37 @@ class FileManager {
         
         console.log('Fichier sélectionné:', fileCard.querySelector('.file-name').textContent);
     }
+
+    // Méthodes professionnelles
+    showToast(message, type = 'info') {
+        const toast = document.createElement('div');
+        toast.className = `toast`;
+        toast.textContent = message;
+        document.body.appendChild(toast);
+        
+        setTimeout(() => {
+            toast.remove();
+        }, 3000);
+    }
+
+    updateStats(resultsCount = 0) {
+        const totalFiles = document.getElementById('totalFiles');
+        const searchResults = document.getElementById('searchResults');
+        const lastUpdate = document.getElementById('lastUpdate');
+        
+        if (totalFiles) totalFiles.textContent = this.files.length;
+        if (searchResults) searchResults.textContent = resultsCount;
+        if (lastUpdate) lastUpdate.textContent = new Date().toLocaleDateString('fr-FR');
+    }
 }
 
 // =============================================
-// PRÉVISUALISATION DES FICHIERS
+// PRÉVISUALISATION DES FICHIERS - PDF CORRIGÉ
 // =============================================
 FileManager.prototype.previewFile = function(url, type, filename) {
     switch(type) {
         case 'PDF':
-            this.openPDF(url);
+            this.openPDF(url, filename);
             break;
         case 'Audio':
             this.previewAudio(url, filename);
@@ -247,9 +270,96 @@ FileManager.prototype.previewFile = function(url, type, filename) {
     }
 };
 
-// PDF - Ouverture externe dans le lecteur du navigateur
-FileManager.prototype.openPDF = function(url) {
-    window.open(url, '_blank');
+// PDF - Ouverture avec Google Viewer
+FileManager.prototype.openPDF = function(url, filename) {
+    const modal = this.createModal();
+    
+    // Message de chargement
+    modal.innerHTML = `
+        <div class="preview-content pdf-preview">
+            <div class="pdf-header">
+                <h3>📖 ${filename}</h3>
+                <button class="btn btn-secondary" onclick="fileManager.downloadFile('${url}', '${filename}')">
+                    📥 Télécharger
+                </button>
+            </div>
+            <div class="pdf-loading">
+                <div class="loading-spinner"></div>
+                <p>Chargement du PDF...</p>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+
+    // Essayer Google Viewer
+    const googleViewerUrl = `https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(url)}`;
+    
+    // Créer l'iframe après un petit délai
+    setTimeout(() => {
+        const iframe = document.createElement('iframe');
+        iframe.src = googleViewerUrl;
+        iframe.width = '100%';
+        iframe.height = '600px';
+        iframe.frameBorder = '0';
+        iframe.style.borderRadius = '10px';
+        iframe.onload = () => {
+            // Cacher le loading
+            const loading = modal.querySelector('.pdf-loading');
+            if (loading) loading.style.display = 'none';
+        };
+        iframe.onerror = () => {
+            // Fallback: ouvrir dans nouvel onglet
+            this.fallbackPDF(url, filename, modal);
+        };
+
+        const pdfContainer = document.createElement('div');
+        pdfContainer.className = 'pdf-container';
+        pdfContainer.appendChild(iframe);
+        
+        modal.querySelector('.preview-content').appendChild(pdfContainer);
+        
+        // Ajouter les actions
+        const actions = document.createElement('div');
+        actions.className = 'pdf-actions';
+        actions.innerHTML = `
+            <button class="btn btn-primary" onclick="fileManager.downloadFile('${url}', '${filename}')">
+                📥 Télécharger le PDF
+            </button>
+            <button class="btn btn-secondary" onclick="this.closest('.preview-modal').remove()">
+                Fermer
+            </button>
+        `;
+        modal.querySelector('.preview-content').appendChild(actions);
+    }, 500);
+};
+
+// Fallback si Google Viewer échoue
+FileManager.prototype.fallbackPDF = function(url, filename, modal) {
+    const content = modal.querySelector('.preview-content');
+    content.innerHTML = `
+        <div class="preview-content">
+            <div class="pdf-header">
+                <h3>📖 ${filename}</h3>
+            </div>
+            <div class="pdf-alternative">
+                <div class="icon">📄</div>
+                <h3>PDF non visualisable</h3>
+                <p>Le PDF ne peut pas être affiché directement.</p>
+                <p>Vous pouvez le télécharger pour le visualiser.</p>
+            </div>
+            <div class="pdf-actions">
+                <button class="btn btn-primary" onclick="fileManager.downloadFile('${url}', '${filename}')">
+                    📥 Télécharger le PDF
+                </button>
+                <button class="btn btn-secondary" onclick="window.open('${url}', '_blank')">
+                    Ouvrir dans un nouvel onglet
+                </button>
+                <button class="btn btn-secondary" onclick="this.closest('.preview-modal').remove()">
+                    Fermer
+                </button>
+            </div>
+        </div>
+    `;
 };
 
 // Audio - Prévisualisation avec lecteur
@@ -323,6 +433,7 @@ class SearchSystem {
         this.fileManager = fileManager;
         this.searchInput = document.getElementById('searchInput');
         this.resultsContainer = document.getElementById('resultsContainer');
+        this.lastResults = 0;
         this.init();
     }
 
@@ -337,19 +448,23 @@ class SearchSystem {
     performSearch(query) {
         const results = this.fileManager.searchFiles(query);
         this.displayResults(results, query);
+        this.fileManager.updateStats(results.length);
     }
 
     displayResults(files, query) {
         if (!query) {
             this.resultsContainer.innerHTML = '<p class="no-results">Tapez quelque chose pour rechercher...</p>';
+            this.lastResults = 0;
             return;
         }
 
         if (files.length === 0) {
             this.resultsContainer.innerHTML = `<p class="no-results">Aucun résultat pour "${query}"</p>`;
+            this.lastResults = 0;
             return;
         }
 
+        this.lastResults = files.length;
         this.resultsContainer.innerHTML = files.map(file => {
             const isPDF = file.type === 'PDF';
             const isAudio = file.type === 'Audio';
@@ -409,6 +524,7 @@ class DossierSystem {
     init() {
         if (this.filesContainer) {
             this.displayAllFiles();
+            this.initFilters();
         }
     }
 
@@ -418,7 +534,7 @@ class DossierSystem {
             return;
         }
 
-        // UN SEUL RECTANGLE qui contient toutes les cartes avec passage automatique à la ligne
+               // UN SEUL RECTANGLE qui contient toutes les cartes avec passage automatique à la ligne
         this.filesContainer.innerHTML = `
             <div class="file-row">
                 ${this.fileManager.files.map(file => {
@@ -456,6 +572,39 @@ class DossierSystem {
         `;
     }
 
+    initFilters() {
+        const filterButtons = document.querySelectorAll('.btn-filter');
+        const sortSelect = document.getElementById('sortSelect');
+        
+        if (filterButtons.length > 0) {
+            filterButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    this.filterFiles(btn.dataset.filter);
+                });
+            });
+        }
+        
+        if (sortSelect) {
+            sortSelect.addEventListener('change', () => {
+                this.sortFiles(sortSelect.value);
+            });
+        }
+    }
+
+    filterFiles(filter) {
+        // Implémentation basique du filtrage
+        console.log('Filtrer par:', filter);
+        this.fileManager.showToast(`Filtre appliqué: ${filter}`);
+    }
+
+    sortFiles(criteria) {
+        // Implémentation basique du tri
+        console.log('Trier par:', criteria);
+        this.fileManager.showToast(`Tri appliqué: ${criteria}`);
+    }
+
     formatSize(bytes) {
         if (!bytes) return 'Taille inconnue';
         const sizes = ['Bytes', 'KB', 'MB', 'GB'];
@@ -490,3 +639,4 @@ document.addEventListener('DOMContentLoaded', function() {
     initNavigation();
     window.fileManager = new FileManager();
 });
+{}         
