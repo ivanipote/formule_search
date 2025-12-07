@@ -11,6 +11,14 @@
     
     <!-- Icônes Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- KaTeX pour le rendu mathématique -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <!-- Ajouter après KaTeX -->
+<script defer src="katex-converter.js"></script>
+    
+    <!-- Préchargement -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
 </head>
 <body>
     <!-- Header avec effet flou -->
@@ -88,6 +96,10 @@
                 <div class="tip">
                     <i class="fas fa-bolt"></i>
                     <span>Recherche intelligente et instantanée</span>
+                </div>
+                <div class="tip">
+                    <i class="fas fa-square-root-alt"></i>
+                    <span>Formules rendues en notation mathématique</span>
                 </div>
             </div>
         </div>
@@ -182,19 +194,31 @@
     <!-- Overlay -->
     <div class="overlay" id="overlay"></div>
 
-    <!-- Scripts -->
+    <!-- KaTeX JavaScript -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    
+    <!-- Scripts de l'application -->
     <script src="script.js"></script>
-    <script src="filtre.js"></script>
     <script src="rech.js"></script>
+    <script src="filtre.js"></script>
     
     <!-- Initialisation -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('mathX_searcher - Page accueil chargée');
+            console.log('🧮 mathX_searcher - Chargement avec KaTeX');
             
-            // Vérification des liens (pour debug)
-            const liens = document.querySelectorAll('a[href]');
-            console.log(`${liens.length} liens trouvés sur la page`);
+            // Attendre que KaTeX soit chargé
+            const checkKaTeX = setInterval(() => {
+                if (typeof katex !== 'undefined') {
+                    clearInterval(checkKaTeX);
+                    console.log('✅ KaTeX chargé pour rendu mathématique');
+                    
+                    // Précharger les données
+                    if (window.RechercheEngine && typeof window.RechercheEngine.prechargerDonnees === 'function') {
+                        window.RechercheEngine.prechargerDonnees();
+                    }
+                }
+            }, 100);
         });
     </script>
 </body>

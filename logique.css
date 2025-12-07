@@ -1,0 +1,1063 @@
+/**
+ * logique.css - Styles dynamiques pour mathX_searcher
+ * Responsable de l'apparence des résultats, états et interactions
+ */
+
+/* ============================================
+   ÉTATS DE LA PAGE
+   ============================================ */
+
+/* État d'accueil (bienvenue) */
+.welcome-state {
+    text-align: center;
+    padding: 60px 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.welcome-icon {
+    font-size: 4rem;
+    color: #3b82f6;
+    margin-bottom: 25px;
+    opacity: 0.9;
+}
+
+.welcome-subtitle {
+    color: #64748b;
+    font-size: 1.2rem;
+    margin-bottom: 40px;
+    line-height: 1.6;
+}
+
+.welcome-tips {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-width: 500px;
+    margin: 40px auto 0;
+}
+
+.tip {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 20px;
+    background-color: #f8fafc;
+    border-radius: 10px;
+    border-left: 4px solid #3b82f6;
+}
+
+.tip i {
+    color: #3b82f6;
+    font-size: 1.2rem;
+    width: 24px;
+}
+
+.tip span {
+    color: #475569;
+    font-size: 0.95rem;
+    text-align: left;
+}
+
+/* État "recherche en cours" */
+.searching-state {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 20px;
+    text-align: center;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid #e2e8f0;
+    border-top: 4px solid #3b82f6;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.searching-state p {
+    color: #64748b;
+    font-size: 1.1rem;
+    margin-top: 10px;
+}
+
+/* État "aucun résultat" */
+.no-results-state {
+    display: none;
+    text-align: center;
+    padding: 80px 20px;
+}
+
+.no-results-state i {
+    font-size: 4rem;
+    color: #cbd5e1;
+    margin-bottom: 20px;
+}
+
+.no-results-state h3 {
+    color: #475569;
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.no-results-state p {
+    color: #94a3b8;
+    font-size: 1.1rem;
+    max-width: 500px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* État erreur */
+.error-state {
+    text-align: center;
+    padding: 60px 20px;
+    background-color: #fef2f2;
+    border-radius: 12px;
+    border: 1px solid #fecaca;
+    margin: 30px auto;
+    max-width: 500px;
+}
+
+.error-state i {
+    font-size: 3.5rem;
+    color: #dc2626;
+    margin-bottom: 20px;
+}
+
+.error-state h3 {
+    color: #7f1d1d;
+    margin-bottom: 10px;
+    font-size: 1.6rem;
+}
+
+.error-state p {
+    color: #991b1b;
+    margin-bottom: 25px;
+}
+
+.retry-button {
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.retry-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3);
+}
+
+/* ============================================
+   CARTES DE RÉSULTATS
+   ============================================ */
+
+.results-container {
+    display: grid;
+    gap: 20px;
+    padding: 20px 0 60px;
+}
+
+/* Carte individuelle */
+.result-card {
+    background: white;
+    border-radius: 14px;
+    padding: 24px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e2e8f0;
+    transition: all 0.3s ease;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.result-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    border-color: #c7d2fe;
+}
+
+/* En-tête de la carte */
+.result-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 18px;
+    gap: 15px;
+}
+
+/* TITRE : Noir Gras (selon tes spécifications) */
+.result-title {
+    color: #000000; /* NOIR */
+    font-weight: 700; /* GRAS */
+    font-size: 1.4rem;
+    line-height: 1.4;
+    margin: 0;
+    flex: 1;
+}
+
+/* Catégorie */
+.result-category {
+    background-color: #f0f9ff;
+    color: #0369a1;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    white-space: nowrap;
+    border: 1px solid #bae6fd;
+}
+
+/* FORMULE : Noir Gras */
+.result-formula {
+    color: #000000; /* NOIR */
+    font-weight: 700; /* GRAS */
+    font-size: 1.6rem;
+    margin: 20px 0;
+    padding: 15px;
+    background-color: #f8fafc;
+    border-radius: 10px;
+    border-left: 4px solid #3b82f6;
+    font-family: 'Courier New', monospace;
+    text-align: center;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+/* DESCRIPTION : Bleu */
+.result-description {
+    color: #1d4ed8; /* BLEU */
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 20px 0 25px;
+    padding: 15px;
+    background-color: #f8fafc;
+    border-radius: 8px;
+    border-left: 3px solid #60a5fa;
+}
+
+/* Actions sous la carte */
+.result-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid #e2e8f0;
+}
+
+.action-fav, .action-copy {
+    background: none;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #64748b;
+    font-size: 1.2rem;
+    transition: all 0.2s ease;
+}
+
+.action-fav:hover, .action-copy:hover {
+    background-color: #f8fafc;
+    border-color: #3b82f6;
+    color: #3b82f6;
+    transform: translateY(-2px);
+}
+
+.action-fav i.fas {
+    color: #f59e0b;
+}
+
+.action-copy i.fa-check {
+    color: #10b981;
+}
+
+/* ============================================
+   MESSAGES ET FEEDBACK
+   ============================================ */
+
+/* Message pour les filtres */
+.filter-message {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #fef3c7;
+    color: #92400e;
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: 1px solid #fbbf24;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+    z-index: 100;
+    white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.filter-message i {
+    color: #d97706;
+}
+
+/* Suggestions de recherche */
+.search-suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border-radius: 0 0 12px 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e2e8f0;
+    border-top: none;
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 1000;
+    display: none;
+}
+
+.search-suggestion-item {
+    padding: 12px 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid #f1f5f9;
+    transition: background-color 0.2s;
+}
+
+.search-suggestion-item:hover {
+    background-color: #f8fafc;
+}
+
+.search-suggestion-item i {
+    color: #3b82f6;
+    font-size: 0.9rem;
+}
+
+.search-suggestion-item span {
+    color: #475569;
+    font-size: 0.95rem;
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+/* Animation d'apparition des cartes */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.result-card {
+    animation: fadeInUp 0.4s ease forwards;
+}
+
+/* Animation pour les interactions */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.filter-custom-checkbox:active {
+    animation: pulse 0.2s ease;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+@media (max-width: 768px) {
+    .welcome-state {
+        padding: 40px 15px;
+    }
+    
+    .welcome-icon {
+        font-size: 3rem;
+    }
+    
+    .welcome-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .tip {
+        padding: 10px 15px;
+    }
+    
+    /* Cartes de résultats */
+    .result-card {
+        padding: 20px;
+        margin: 0 10px;
+    }
+    
+    .result-header {
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+    }
+    
+    .result-category {
+        align-self: flex-start;
+    }
+    
+    .result-title {
+        font-size: 1.3rem;
+    }
+    
+    .result-formula {
+        font-size: 1.4rem;
+        padding: 12px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .result-description {
+        font-size: 0.95rem;
+        padding: 12px;
+    }
+    
+    .results-container {
+        gap: 15px;
+        padding: 15px 0 40px;
+    }
+    
+    /* États */
+    .searching-state,
+    .no-results-state {
+        padding: 60px 15px;
+    }
+    
+    .spinner {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+@media (max-width: 480px) {
+    .welcome-tips {
+        gap: 10px;
+    }
+    
+    .tip {
+        padding: 8px 12px;
+    }
+    
+    .tip i {
+        font-size: 1rem;
+    }
+    
+    .tip span {
+        font-size: 0.85rem;
+    }
+    
+    .result-formula {
+        font-size: 1.2rem;
+        white-space: normal;
+        word-break: break-word;
+    }
+    
+    .result-actions {
+        justify-content: center;
+    }
+    
+    .action-fav, .action-copy {
+        width: 38px;
+        height: 38px;
+        font-size: 1.1rem;
+    }
+    
+    .filter-message {
+        font-size: 0.8rem;
+        padding: 8px 12px;
+        white-space: normal;
+        text-align: center;
+        max-width: 90%;
+    }
+}
+
+/* ============================================
+   ACCESSIBILITÉ
+   ============================================ */
+
+/* Focus visible pour navigation clavier */
+.result-card:focus-within {
+    outline: 3px solid #3b82f6;
+    outline-offset: 2px;
+}
+
+button:focus {
+    outline: 3px solid #3b82f6;
+    outline-offset: 2px;
+}
+
+/* Support mode contraste élevé */
+@media (prefers-contrast: high) {
+    .result-card {
+        border: 2px solid #000;
+    }
+    
+    .result-title,
+    .result-formula {
+        color: #000;
+    }
+    
+    .result-description {
+        color: #0000aa;
+    }
+}
+
+/* Support réduction de mouvement */
+@media (prefers-reduced-motion: reduce) {
+    .result-card,
+    .filter-custom-checkbox,
+    button {
+        transition: none;
+        animation: none;
+    }
+    
+    .spinner {
+        animation-duration: 2s;
+    }
+}
+
+/* ============================================
+   INDICATEURS VISUELS
+   ============================================ */
+
+/* Indicateur de catégorie par couleur */
+.result-card[data-category="math"] {
+    border-top: 4px solid #3b82f6;
+}
+
+.result-card[data-category="physique"] {
+    border-top: 4px solid #10b981;
+}
+
+.result-card[data-category="professionnel"] {
+    border-top: 4px solid #8b5cf6;
+}
+
+/* Badge de catégorie correspondant */
+.result-category[data-category="math"] {
+    background-color: #dbeafe;
+    color: #1e40af;
+    border-color: #93c5fd;
+}
+
+.result-category[data-category="physique"] {
+    background-color: #d1fae5;
+    color: #065f46;
+    border-color: #6ee7b7;
+}
+
+.result-category[data-category="professionnel"] {
+    background-color: #ede9fe;
+    color: #5b21b6;
+    border-color: #c4b5fd;
+}
+/* Ajouter à logique.css */
+
+/* Style spécifique pour KaTeX */
+.katex {
+    font-size: 1.1em !important;
+}
+
+.katex-display {
+    margin: 1em 0 !important;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+/* Container pour formules KaTeX */
+.result-formula {
+    font-family: 'KaTeX_Main', 'Times New Roman', serif;
+    padding: 15px;
+    background-color: #f8fafc;
+    border-radius: 10px;
+    border-left: 4px solid #3b82f6;
+    text-align: center;
+    margin: 20px 0;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Pour les formules inline dans la description */
+.result-description .katex {
+    font-size: 1em !important;
+    display: inline-block;
+    margin: 0 2px;
+}
+
+/* Support pour les formules complexes */
+.katex-html {
+    overflow-x: auto;
+    padding: 5px 0;
+}
+/* AJOUTER CE CODE À logique.css */
+
+/* Container principal - Limiter la largeur */
+.results-container {
+    display: grid;
+    gap: 20px;
+    padding: 20px 0 60px;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+/* Carte individuelle - Contrôler la largeur */
+.result-card {
+    background: white;
+    border-radius: 14px;
+    padding: 24px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e2e8f0;
+    transition: all 0.3s ease;
+    max-width: 100%;
+    overflow: hidden;
+    word-wrap: break-word;
+    word-break: break-word;
+}
+
+/* FORMULE - Gestion du débordement */
+.result-formula {
+    color: #000000;
+    font-weight: 700;
+    font-size: 1.6rem;
+    margin: 20px 0;
+    padding: 15px;
+    background-color: #f8fafc;
+    border-radius: 10px;
+    border-left: 4px solid #3b82f6;
+    font-family: 'KaTeX_Main', 'Courier New', monospace;
+    text-align: center;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* KaTeX - Forcer le débordement horizontal */
+.katex-display {
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 10px 0;
+}
+
+.katex-display > .katex {
+    display: inline-block;
+    white-space: nowrap;
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+/* Pour les formules professionnelles longues */
+.result-card[data-category="professionnel"] .result-formula {
+    font-size: 1.4rem; /* Légèrement plus petit */
+    white-space: normal;
+    word-break: break-all;
+    text-align: left;
+}
+
+/* Scroll horizontal uniquement pour les formules trop longues */
+.result-formula::-webkit-scrollbar {
+    height: 6px;
+}
+
+.result-formula::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 3px;
+}
+
+.result-formula::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+}
+
+.result-formula::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Responsive amélioré */
+@media (max-width: 768px) {
+    .result-formula {
+        font-size: 1.3rem;
+        white-space: normal;
+        word-break: break-word;
+        overflow-x: hidden;
+        text-align: left;
+        padding: 12px;
+    }
+    
+    .result-card[data-category="professionnel"] .result-formula {
+        font-size: 1.2rem;
+    }
+    
+    .katex {
+        font-size: 1em !important;
+        max-width: 100%;
+        overflow-x: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .result-formula {
+        font-size: 1.1rem;
+        white-space: normal;
+        word-break: break-word;
+    }
+    
+    .katex {
+        font-size: 0.9em !important;
+    }
+    
+    /* Forcer le wrap sur mobile */
+    .katex-display > .katex {
+        white-space: normal;
+        word-break: break-word;
+    }
+}
+/* Ajouter/modifier dans logique.css */
+
+/* ============================================
+   SCROLL HORIZONTAL POUR FORMULES LONGUES
+   ============================================ */
+
+/* Conteneur de formule avec scroll */
+.result-formula {
+    color: #000000;
+    font-weight: 700;
+    font-size: 1.6rem;
+    margin: 20px 0;
+    padding: 15px;
+    background-color: #f8fafc;
+    border-radius: 10px;
+    border-left: 4px solid #3b82f6;
+    font-family: 'KaTeX_Main', 'Courier New', monospace;
+    
+    /* SCROLL HORIZONTAL */
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    min-height: 70px;
+    display: flex;
+    align-items: center;
+    
+    /* Style de la scrollbar */
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 #f1f5f9;
+    
+    /* Indicateur visuel qu'on peut scroller */
+    background: linear-gradient(to right, #f8fafc 90%, rgba(248, 250, 252, 0.8)),
+                linear-gradient(to left, #f8fafc 90%, rgba(248, 250, 252, 0.8));
+    background-position: left center, right center;
+    background-repeat: no-repeat;
+    background-size: 40px 100%, 40px 100%;
+}
+
+/* KaTeX dans le conteneur scrollable */
+.result-formula .katex {
+    display: inline-block;
+    padding: 0 10px;
+    min-width: min-content;
+}
+
+/* KaTeX display */
+.result-formula .katex-display {
+    display: inline-block;
+    margin: 0;
+    padding: 5px 15px;
+    white-space: nowrap;
+}
+
+/* Indicateurs de défilement (flèches) */
+.result-formula::before,
+.result-formula::after {
+    content: '';
+    position: sticky;
+    top: 0;
+    width: 30px;
+    height: 100%;
+    display: none;
+    z-index: 2;
+}
+
+.result-formula::before {
+    left: 0;
+    background: linear-gradient(to right, #f8fafc, transparent);
+}
+
+.result-formula::after {
+    right: 0;
+    background: linear-gradient(to left, #f8fafc, transparent);
+}
+
+/* Montrer les indicateurs quand on peut scroller */
+.result-formula.scrollable::before,
+.result-formula.scrollable::after {
+    display: block;
+}
+
+/* Style de la scrollbar pour Webkit */
+.result-formula::-webkit-scrollbar {
+    height: 8px;
+}
+
+.result-formula::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 4px;
+    margin: 0 10px;
+}
+
+.result-formula::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+    border: 2px solid #f1f5f9;
+}
+
+.result-formula::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Animation au scroll */
+@keyframes pulseScroll {
+    0% { opacity: 0.3; }
+    50% { opacity: 1; }
+    100% { opacity: 0.3; }
+}
+
+/* Indicateur "scroll me" */
+.scroll-hint {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+    font-size: 1.2rem;
+    animation: pulseScroll 2s infinite;
+    display: none;
+}
+
+.result-formula:not(.scrolled) .scroll-hint {
+    display: block;
+}
+
+/* Quand l'utilisateur a scrollé */
+.result-formula.scrolled {
+    background: #f8fafc; /* Enlever le gradient */
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .result-formula {
+        font-size: 1.4rem;
+        padding: 12px;
+        min-height: 60px;
+    }
+    
+    .result-formula::-webkit-scrollbar {
+        height: 6px;
+    }
+    
+    /* Sur mobile, permettre le wrap si vraiment trop long */
+    .result-formula.mobile-wrap {
+        white-space: normal;
+        word-break: break-word;
+    }
+}
+
+@media (max-width: 480px) {
+    .result-formula {
+        font-size: 1.2rem;
+        min-height: 50px;
+    }
+    
+    /* Indicateurs plus petits sur mobile */
+    .result-formula::before,
+    .result-formula::after {
+        width: 20px;
+    }
+}
+
+/* Catégories avec couleurs différentes */
+.result-card[data-category="math"] .result-formula {
+    border-left-color: #3b82f6;
+    scrollbar-color: #93c5fd #dbeafe;
+}
+
+.result-card[data-category="physique"] .result-formula {
+    border-left-color: #10b981;
+    scrollbar-color: #6ee7b7 #d1fae5;
+}
+
+.result-card[data-category="professionnel"] .result-formula {
+    border-left-color: #8b5cf6;
+    scrollbar-color: #c4b5fd #ede9fe;
+}
+/* ============================================
+   SURBRILLANCE DES TERMES RECHERCHÉS
+   ============================================ */
+
+/* Style de base pour la surbrillance */
+.highlight-term {
+    background-color: #fffbeb;
+    color: #92400e;
+    padding: 2px 4px;
+    border-radius: 4px;
+    border: 1px solid #fbbf24;
+    font-weight: 700;
+    box-shadow: 0 2px 4px rgba(251, 191, 36, 0.2);
+    animation: highlightPulse 0.5s ease;
+}
+
+/* Animation d'apparition */
+@keyframes highlightPulse {
+    0% {
+        background-color: transparent;
+        transform: scale(0.95);
+    }
+    50% {
+        background-color: #fef3c7;
+        transform: scale(1.02);
+    }
+    100% {
+        background-color: #fffbeb;
+        transform: scale(1);
+    }
+}
+
+/* Surbrillance dans le titre */
+.result-title .highlight-term {
+    background-color: #dbeafe;
+    color: #1e40af;
+    border-color: #93c5fd;
+    font-size: 1.05em;
+    padding: 3px 6px;
+    margin: 0 1px;
+}
+
+/* Surbrillance dans la description */
+.result-description .highlight-term {
+    background-color: #f0f9ff;
+    color: #0369a1;
+    border-color: #7dd3fc;
+    font-weight: 600;
+}
+
+/* Surbrillance dans la formule (si pas KaTeX) */
+.result-formula:not(:has(.katex)) .highlight-term {
+    background-color: #fef3c7;
+    color: #92400e;
+    border-color: #fbbf24;
+    font-family: 'Courier New', monospace;
+    padding: 1px 3px;
+}
+
+/* Effet au survol */
+.highlight-term:hover {
+    background-color: #fde68a !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(251, 191, 36, 0.3);
+    transition: all 0.2s ease;
+}
+
+/* Catégories avec couleurs différentes pour la surbrillance */
+.result-card[data-category="math"] .highlight-term {
+    background-color: #dbeafe !important;
+    color: #1e40af !important;
+    border-color: #93c5fd !important;
+}
+
+.result-card[data-category="physique"] .highlight-term {
+    background-color: #d1fae5 !important;
+    color: #065f46 !important;
+    border-color: #6ee7b7 !important;
+}
+
+.result-card[data-category="professionnel"] .highlight-term {
+    background-color: #ede9fe !important;
+    color: #5b21b6 !important;
+    border-color: #c4b5fd !important;
+}
+
+/* Indicateur de correspondance multiple */
+.highlight-term.multiple {
+    position: relative;
+}
+
+.highlight-term.multiple::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    width: 8px;
+    height: 8px;
+    background-color: #dc2626;
+    border-radius: 50%;
+    border: 1px solid white;
+}
+
+/* Pour les recherches multi-mots */
+.highlight-term.exact-match {
+    background-color: #dcfce7 !important;
+    color: #166534 !important;
+    border-color: #86efac !important;
+    font-weight: 800;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .highlight-term {
+        padding: 1px 3px;
+        font-size: 0.95em;
+    }
+    
+    .result-title .highlight-term {
+        padding: 2px 4px;
+    }
+}
+
+/* Mode contraste élevé */
+@media (prefers-contrast: high) {
+    .highlight-term {
+        background-color: yellow !important;
+        color: black !important;
+        border: 2px solid black !important;
+    }
+}
