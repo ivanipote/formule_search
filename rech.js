@@ -1,6 +1,6 @@
 /**
- * rech.js - Moteur de recherche CORRIGÉ pour mathX_searcher
- * Version simplifiée avec conversion KaTeX basique mais fiable
+ * rech.js - Moteur de recherche LOGIQUE pour mathX_searcher
+ * Version simplifiée sans dépendance KaTeX
  */
 
 // ================= CONFIGURATION =================
@@ -12,8 +12,7 @@ const CONFIG = {
         professionnel: 'professionnel.txt'
     },
     DELAI_RECHERCHE: 300,
-    CACHE_DUREE: 5 * 60 * 1000,
-    KATEX_ENABLED: true
+    CACHE_DUREE: 5 * 60 * 1000
 };
 
 // ================= ÉTATS =================
@@ -24,102 +23,82 @@ let cacheDonnees = {
     timestamp: null
 };
 
-let indexInverse = {};
 let dernierRecherche = '';
 let dernierResultats = [];
-let katexInitialise = false;
 
-// ================= CONVERSION KATEX SIMPLE MAIS FIABLE =================
+// ================= FONCTIONS D'AIDE =================
 
 /**
- * Conversion ULTRA-BASIQUE mais fiable pour KaTeX
- * On convertit seulement ce qui est ESSENTIEL
+ * Échapper le HTML pour éviter les injections
  */
-function convertirPourKaTeX(formule) {
-    if (!formule || typeof formule !== 'string') return formule;
-    
-    let resultat = formule;
-    
-    // 1. PROTÉGER d'abord les formules déjà en LaTeX
-    if (resultat.includes('\\frac') || resultat.includes('\\sqrt') || resultat.includes('\\sum')) {
-        // La formule est déjà en LaTeX, on laisse intacte
-        return resultat;
+function escapeHtml(text) {
+    if (!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+/**
+ * Appliquer la surbrillance sur les termes recherchés
+ */
+function appliquerSurbrillance(texte, termes) {
+    if (!termes || !texte || termes.trim() === '') {
+        return escapeHtml(texte);
     }
     
-    // 2. Conversions SAFE seulement
-    // Fractions spéciales
-    resultat = resultat.replace(/½/g, '\\frac{1}{2}');
-    resultat = resultat.replace(/¼/g, '\\frac{1}{4}');
-    resultat = resultat.replace(/¾/g, '\\frac{3}{4}');
+    const texteEchappe = escapeHtml(texte);
+    const termesArray = termes.toLowerCase().split(' ').filter(t => t.length > 1);
     
-    // Carré et cube
-    resultat = resultat.replace(/²/g, '^{2}');
-    resultat = resultat.replace(/³/g, '^{3}');
+    if (termesArray.length === 0) {
+        return texteEchappe;
+    }
     
-    // Multiplications
-    resultat = resultat.replace(/·/g, '\\cdot ');
-    resultat = resultat.replace(/\*/g, '\\cdot ');
-    resultat = resultat.replace(/×/g, '\\times ');
+    let resultat = texteEchappe;
     
-    // Symboles grecs (uniquement ceux qu'on utilise)
-    resultat = resultat.replace(/π/g, '\\pi ');
-    resultat = resultat.replace(/α/g, '\\alpha ');
-    resultat = resultat.replace(/β/g, '\\beta ');
-    resultat = resultat.replace(/γ/g, '\\gamma ');
-    resultat = resultat.replace(/Δ/g, '\\Delta ');
-    
-    // Racines
-    resultat = resultat.replace(/√\(([^)]+)\)/g, '\\sqrt{$1}');
-    resultat = resultat.replace(/√([a-zA-Z0-9]+)/g, '\\sqrt{$1}');
-    
-    // Somme et intégrale (basique)
-    resultat = resultat.replace(/∑/g, '\\sum ');
-    resultat = resultat.replace(/∫/g, '\\int ');
-    
-    // 3. Nettoyer les espaces en trop
-    resultat = resultat.replace(/\s+/g, ' ').trim();
-    
-    // 4. Éviter les commandes collées
-    resultat = resultat.replace(/\\cdot([a-zA-Z])/g, '\\cdot $1');
-    resultat = resultat.replace(/\\Delta([a-zA-Z])/g, '\\Delta $1');
+    // Surligner chaque terme
+    termesArray.forEach(terme => {
+        if (terme.length < 2) return;
+        
+        try {
+            const termeEchappe = terme.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            const regex = new RegExp(`(${termeEchappe})`, 'gi');
+            
+            resultat = resultat.replace(regex, (match) => {
+                return `<span class="highlight-term">${match}</span>`;
+            });
+        } catch (e) {
+            console.warn('Erreur surbrillance pour terme:', terme, e);
+        }
+    });
     
     return resultat;
 }
 
 /**
- * Vérifie si KaTeX peut parser la formule
+ * Formater les formules longues pour un meilleur affichage
  */
-function testerKaTeX(formule, element) {
-    if (!CONFIG.KATEX_ENABLED || !katexInitialise || typeof katex === 'undefined') {
-        return false;
-    }
+function formaterFormuleLongue(formule) {
+    if (!formule || formule.length < 50) return formule;
     
-    try {
-        const options = {
-            throwOnError: false,
-            displayMode: true,
-            fleqn: false,
-            output: 'html'
-        };
-        
-        katex.render(formule, element, options);
-        return true;
-    } catch (error) {
-        console.warn('❌ KaTeX ne peut pas parser:', formule.substring(0, 50), '...');
-        return false;
-    }
+    let resultat = formule;
+    
+    // Ajouter des espaces autour des opérateurs
+    resultat = resultat.replace(/=/g, ' = ');
+    resultat = resultat.replace(/\+/g, ' + ');
+    resultat = resultat.replace(/-/g, ' - ');
+    resultat = resultat.replace(/\//g, ' / ');
+    resultat = resultat.replace(/\*/g, ' × ');
+    resultat = resultat.replace(/</g, ' < ');
+    resultat = resultat.replace(/>/g, ' > ');
+    resultat = resultat.replace(/≤/g, ' ≤ ');
+    resultat = resultat.replace(/≥/g, ' ≥ ');
+    
+    resultat = resultat.replace(/\s+/g, ' ');
+    
+    return resultat.trim();
 }
 
-function initialiserKaTeX() {
-    if (typeof katex !== 'undefined' && !katexInitialise) {
-        katexInitialise = true;
-        console.log('✅ KaTeX initialisé (mode simple)');
-        return true;
-    }
-    return false;
-}
-
-// ================= FONCTIONS CORE (GARDER SIMPLE) =================
+// ================= FONCTIONS CORE =================
 
 async function chargerFichierFormules(fichier) {
     try {
@@ -140,7 +119,6 @@ async function chargerFichierFormules(fichier) {
 function parserContenu(contenu) {
     const formules = [];
     
-    // Découper par //
     const parties = contenu.split('//').filter(p => p.trim().length > 0);
     
     for (let i = 0; i < parties.length - 1; i += 2) {
@@ -172,7 +150,7 @@ function parserContenu(contenu) {
                 titre,
                 formule,
                 description,
-                source: 'math' // Sera remplacé
+                source: 'math'
             });
         }
     }
@@ -182,7 +160,6 @@ function parserContenu(contenu) {
 }
 
 async function chargerToutesDonnees() {
-    // Vérifier cache
     if (cacheDonnees.timestamp && 
         Date.now() - cacheDonnees.timestamp < CONFIG.CACHE_DUREE &&
         cacheDonnees.math !== null) {
@@ -191,11 +168,6 @@ async function chargerToutesDonnees() {
     
     console.log('🔄 Chargement des données...');
     
-    // Initialiser KaTeX
-    if (CONFIG.KATEX_ENABLED) {
-        initialiserKaTeX();
-    }
-    
     try {
         const [math, physique, professionnel] = await Promise.all([
             chargerFichierFormules(CONFIG.FICHIERS.math),
@@ -203,7 +175,6 @@ async function chargerToutesDonnees() {
             chargerFichierFormules(CONFIG.FICHIERS.professionnel)
         ]);
         
-        // Ajouter source
         math.forEach(f => f.source = 'math');
         physique.forEach(f => f.source = 'physique');
         professionnel.forEach(f => f.source = 'professionnel');
@@ -219,7 +190,6 @@ async function chargerToutesDonnees() {
         
     } catch (error) {
         console.error('❌ Erreur chargement données:', error);
-        // Données par défaut pour éviter crash
         cacheDonnees = {
             math: [],
             physique: [],
@@ -237,7 +207,6 @@ function rechercherFormules(terme, filtresActifs) {
     terme = terme.toLowerCase().trim();
     const resultats = [];
     
-    // ORDRE FIXE : Math → Physique → Professionnel
     const ordreCategories = ['math', 'physique', 'professionnel'];
     
     ordreCategories.forEach(categorie => {
@@ -249,13 +218,11 @@ function rechercherFormules(terme, filtresActifs) {
             if (texteRecherche.includes(terme)) {
                 let score = 0;
                 
-                // Calcul de pertinence simple
                 if (formule.titre.toLowerCase().includes(terme)) score += 3;
                 if (formule.motCle.includes(terme)) score += 2;
                 if (formule.formule.toLowerCase().includes(terme)) score += 1.5;
                 if (formule.description.toLowerCase().includes(terme)) score += 1;
                 
-                // Bonus pour l'ordre des catégories
                 score += (10 - ordreCategories.indexOf(categorie)) * 0.01;
                 
                 resultats.push({
@@ -268,7 +235,6 @@ function rechercherFormules(terme, filtresActifs) {
         });
     });
     
-    // Trier par score
     resultats.sort((a, b) => b.score - a.score);
     
     return resultats;
@@ -295,28 +261,41 @@ function getCategorieAffichage(categorie) {
     return map[categorie] || categorie;
 }
 
-function formaterResultatsPourHTML(resultats) {
+/**
+ * Formater les résultats pour HTML avec surbrillance
+ * DÉLÈGUE le formatage des formules à KatexManager
+ */
+function formaterResultatsPourHTML(resultats, termeRecherche = '') {
     if (resultats.length === 0) {
         return '<div class="no-results">Aucun résultat trouvé</div>';
     }
     
     return resultats.map(formule => {
-        // Essayer KaTeX, sinon afficher texte brut
-        const formuleAffichee = CONFIG.KATEX_ENABLED ? convertirPourKaTeX(formule.formule) : formule.formule;
+        // Appliquer la surbrillance
+        const titreAvecSurbrillance = termeRecherche ? 
+            appliquerSurbrillance(formule.titre, termeRecherche) : 
+            escapeHtml(formule.titre);
+        
+        const descriptionAvecSurbrillance = termeRecherche ? 
+            appliquerSurbrillance(formule.description, termeRecherche) : 
+            escapeHtml(formule.description);
+        
+        // La formule sera traitée par KatexManager après
+        const formuleBrute = escapeHtml(formule.formule);
         
         return `
         <div class="result-card" data-id="${formule.id}" data-category="${formule.source}">
             <div class="result-header">
-                <h3 class="result-title">${escapeHtml(formule.titre)}</h3>
+                <h3 class="result-title">${titreAvecSurbrillance}</h3>
                 <span class="result-category">${formule.categorieAffichage}</span>
             </div>
             
-            <div class="result-formula" data-formule="${escapeHtml(formuleAffichee)}">
-                ${escapeHtml(formule.formule)}
+            <div class="result-formula" data-formule-raw="${escapeHtml(formule.formule)}">
+                ${formuleBrute}
             </div>
             
             <div class="result-description">
-                ${escapeHtml(formule.description)}
+                ${descriptionAvecSurbrillance}
             </div>
             
             <div class="result-actions">
@@ -330,32 +309,6 @@ function formaterResultatsPourHTML(resultats) {
         </div>
         `;
     }).join('');
-}
-
-function escapeHtml(text) {
-    if (!text) return '';
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
-}
-
-function appliquerKaTeXAuxResultats() {
-    if (!katexInitialise || !CONFIG.KATEX_ENABLED) return;
-    
-    const elements = document.querySelectorAll('.result-formula');
-    elements.forEach(element => {
-        const formuleBrute = element.textContent;
-        const formuleConvertie = convertirPourKaTeX(formuleBrute);
-        
-        // Tester si KaTeX peut parser
-        const succes = testerKaTeX(formuleConvertie, element);
-        
-        if (!succes) {
-            // Fallback : texte brut avec style
-            element.innerHTML = `<span class="formule-fallback">${escapeHtml(formuleBrute)}</span>`;
-            element.classList.add('fallback-mode');
-        }
-    });
 }
 
 function prechargerDonnees() {
@@ -379,7 +332,11 @@ window.RechercheEngine = {
     rechercherIntelligente,
     formaterResultatsPourHTML,
     prechargerDonnees,
-    appliquerKaTeXAuxResultats,
+    
+    // Fonctions d'aide
+    appliquerSurbrillance,
+    formaterFormuleLongue,
+    escapeHtml,
     
     // Utilitaires
     getFiltresActifs: () => {
@@ -393,7 +350,6 @@ window.RechercheEngine = {
             if (phys && phys.checked) actifs.push('physique');
             if (prof && prof.checked) actifs.push('professionnel');
         } catch (e) {
-            // Fallback
             return ['math', 'physique', 'professionnel'];
         }
         return actifs;
@@ -406,8 +362,7 @@ window.RechercheEngine = {
             math: cacheDonnees.math ? cacheDonnees.math.length : 0,
             physique: cacheDonnees.physique ? cacheDonnees.physique.length : 0,
             professionnel: cacheDonnees.professionnel ? cacheDonnees.professionnel.length : 0
-        },
-        katex: katexInitialise ? 'prêt' : 'non chargé'
+        }
     }),
     
     // Réinitialiser
@@ -420,83 +375,10 @@ window.RechercheEngine = {
 // Auto-start
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
-        console.log('🚀 rech.js - Version simplifiée chargée');
+        console.log('🚀 rech.js - Moteur de recherche logique chargé');
         prechargerDonnees();
-        
-        // Vérifier KaTeX
-        setTimeout(() => {
-            if (typeof katex === 'undefined') {
-                console.warn('⚠️ KaTeX non détecté, chargement...');
-                const script = document.createElement('script');
-                script.src = 'https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js';
-                script.onload = () => {
-                    initialiserKaTeX();
-                    console.log('✅ KaTeX chargé dynamiquement');
-                };
-                document.head.appendChild(script);
-            } else {
-                initialiserKaTeX();
-            }
-        }, 500);
     });
 } else {
-    console.log('🚀 rech.js - Version simplifiée chargée');
+    console.log('🚀 rech.js - Moteur de recherche logique chargé');
     prechargerDonnees();
-}
-// Ajouter cette fonction utilitaire
-function formaterFormuleLongue(formule) {
-    if (!formule || formule.length < 50) return formule;
-    
-    // Pour les formules très longues, ajouter des espaces stratégiques
-    let resultat = formule;
-    
-    // Remplacer certains opérateurs par des versions avec espace
-    resultat = resultat.replace(/=/g, ' = ');
-    resultat = resultat.replace(/\+/g, ' + ');
-    resultat = resultat.replace(/-/g, ' - ');
-    resultat = resultat.replace(/\//g, ' / ');
-    
-    // Enlever les doubles espaces
-    resultat = resultat.replace(/\s+/g, ' ');
-    
-    return resultat;
-}
-
-// Modifier formaterResultatsPourHTML
-function formaterResultatsPourHTML(resultats) {
-    if (resultats.length === 0) {
-        return '<div class="no-results">Aucun résultat trouvé</div>';
-    }
-    
-    return resultats.map(formule => {
-        const formuleAffichee = CONFIG.KATEX_ENABLED ? 
-            convertirPourKaTeX(formule.formule) : 
-            formaterFormuleLongue(formule.formule);
-        
-        return `
-        <div class="result-card" data-id="${formule.id}" data-category="${formule.source}">
-            <div class="result-header">
-                <h3 class="result-title">${escapeHtml(formule.titre)}</h3>
-                <span class="result-category">${formule.categorieAffichage}</span>
-            </div>
-            
-            <div class="result-formula" data-formule="${escapeHtml(formuleAffichee)}">
-                ${escapeHtml(formule.formule)}
-            </div>
-            
-            <div class="result-description">
-                ${escapeHtml(formule.description)}
-            </div>
-            
-            <div class="result-actions">
-                <button class="action-fav" data-id="${formule.id}">
-                    <i class="far fa-star"></i>
-                </button>
-                <button class="action-copy" data-formula="${escapeHtml(formule.formule)}">
-                    <i class="far fa-copy"></i>
-                </button>
-            </div>
-        </div>
-        `;
-    }).join('');
 }

@@ -1,6 +1,5 @@
 /**
- * filtre.js - Gestion des filtres pour mathX_searcher
- * Avec réinitialisation propre pour éviter les inversions
+ * filtre.js - Gestion filtres avec surbrillance
  */
 
 const FILTRES_CONFIG = {
@@ -11,7 +10,6 @@ const FILTRES_CONFIG = {
 let filtresActifs = new Set(FILTRES_CONFIG.ETAT_INITIAL);
 let rechercheEnCours = false;
 let timeoutRecherche = null;
-let derniersFiltres = null; // Pour détecter les changements
 
 let elements = {
     filterInputs: null,
@@ -50,7 +48,6 @@ function initialiserEcouteurs() {
         if (e.key === 'Enter') lancerRechercheImmediate();
     });
     
-    // Reset de l'historique quand on efface la recherche
     elements.searchInput.addEventListener('input', function() {
         if (this.value.trim() === '') {
             window.RechercheEngine && window.RechercheEngine.reinitialiserHistorique();
@@ -58,16 +55,10 @@ function initialiserEcouteurs() {
     });
 }
 
-/**
- * Réinitialise l'affichage des résultats
- */
 function reinitialiserAffichage() {
     if (!elements.resultsContainer) return;
-    
-    // Animation de fade out
     elements.resultsContainer.style.opacity = '0.5';
     elements.resultsContainer.style.transition = 'opacity 0.2s ease';
-    
     setTimeout(() => {
         if (elements.resultsContainer) {
             elements.resultsContainer.style.opacity = '1';
@@ -78,8 +69,6 @@ function reinitialiserAffichage() {
 function gererChangementFiltre() {
     const filtre = this.closest('.filter-checkbox').dataset.filter;
     const estActive = this.checked;
-    
-    // Sauvegarder l'état précédent pour comparaison
     const anciensFiltres = new Set(filtresActifs);
     
     if (estActive) {
@@ -88,7 +77,6 @@ function gererChangementFiltre() {
         filtresActifs.delete(filtre);
     }
     
-    // Vérifier qu'au moins un filtre est actif
     if (filtresActifs.size === 0) {
         this.checked = true;
         filtresActifs.add(filtre);
@@ -97,13 +85,9 @@ function gererChangementFiltre() {
     }
     
     console.log(`🔧 Filtre ${filtre}: ${estActive ? 'activé' : 'désactivé'}`);
-    console.log(`📊 Nouveaux filtres: ${Array.from(filtresActifs).join(', ')}`);
     
-    // Réinitialiser l'affichage si les filtres ont changé
     if (!setsEgaux(anciensFiltres, filtresActifs)) {
         reinitialiserAffichage();
-        
-        // Forcer une nouvelle recherche (pas de cache)
         if (window.RechercheEngine) {
             window.RechercheEngine.reinitialiserHistorique();
         }
@@ -114,9 +98,6 @@ function gererChangementFiltre() {
     }
 }
 
-/**
- * Compare deux sets pour égalité
- */
 function setsEgaux(setA, setB) {
     if (setA.size !== setB.size) return false;
     for (const item of setA) {
@@ -179,8 +160,6 @@ async function lancerRecherche() {
     
     try {
         const filtresArray = Array.from(filtresActifs);
-        
-        // Trier les filtres dans l'ordre fixe
         filtresArray.sort((a, b) => {
             const ordre = ['math', 'physique', 'professionnel'];
             return ordre.indexOf(a) - ordre.indexOf(b);
@@ -190,17 +169,9 @@ async function lancerRecherche() {
         
         const resultats = window.RechercheEngine.rechercherIntelligente(terme, filtresArray);
         
-        // Petit délai pour l'animation
         await new Promise(resolve => setTimeout(resolve, 100));
         
         afficherResultats(resultats, terme);
-        
-        // Appliquer KaTeX après affichage
-        setTimeout(() => {
-            if (window.RechercheEngine && window.RechercheEngine.appliquerKaTeXAuxResultats) {
-                window.RechercheEngine.appliquerKaTeXAuxResultats();
-            }
-        }, 50);
         
     } catch (erreur) {
         console.error('❌ Erreur recherche:', erreur);
@@ -244,18 +215,17 @@ function afficherResultats(resultats, termeRecherche) {
     if (elements.noResultsState) elements.noResultsState.style.display = 'none';
     
     if (elements.resultsContainer && window.RechercheEngine) {
-        const htmlResultats = window.RechercheEngine.formaterResultatsPourHTML(resultats);
+        // 1. Obtenir le HTML des résultats avec surbrillance
+        const htmlResultats = window.RechercheEngine.formaterResultatsPourHTML(resultats, termeRecherche);
         elements.resultsContainer.innerHTML = htmlResultats;
         
-        // Log pour déboguer l'ordre
-        console.log(`📊 ${resultats.length} résultats affichés dans l'ordre:`);
-        resultats.forEach((r, i) => {
-            console.log(`  ${i+1}. [${r.categorieAffichage}] ${r.titre}`);
-        });
+        console.log(`🔦 Surbrillance activée pour: "${termeRecherche}"`);
+        console.log(`📊 ${resultats.length} résultat(s) trouvé(s)`);
         
+        // 2. Initialiser les actions (favoris, copie)
         initialiserActionsResultats();
         
-        // Animation d'apparition ordonnée
+        // 3. Animation d'apparition des cartes
         const cards = elements.resultsContainer.querySelectorAll('.result-card');
         cards.forEach((card, index) => {
             card.style.opacity = '0';
@@ -265,9 +235,68 @@ function afficherResultats(resultats, termeRecherche) {
                 card.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
                 card.style.opacity = '1';
                 card.style.transform = 'translateY(0)';
-            }, index * 30); // Délai plus court pour fluidité
+            }, index * 30);
         });
+        
+        // 4. APPLIQUER KaTeX après un court délai (permettre le rendu DOM)
+        setTimeout(() => {
+            traiterRenduFormules();
+        }, 50);
     }
+}
+
+function traiterRenduFormules() {
+    // Vérifier si KatexManager est disponible
+    if (window.KatexManager) {
+        const katexDisponible = window.KatexManager.estDisponible();
+        
+        if (katexDisponible && window.KatexManager.estInitialise()) {
+            console.log('🎨 Application de KaTeX aux formules...');
+            window.KatexManager.appliquerKaTeXAuxResultats();
+        } else {
+            console.log('🎨 KaTeX non disponible, utilisation du fallback Unicode');
+            if (window.KatexManager.appliquerFallbackUnicode) {
+                window.KatexManager.appliquerFallbackUnicode();
+            }
+        }
+        
+        // Initialiser le scroll horizontal pour les formules longues
+        if (window.KatexManager.initialiserScrollFormules) {
+            window.KatexManager.initialiserScrollFormules();
+        }
+    } else {
+        console.warn('⚠️ KatexManager non trouvé, formules affichées en brut');
+        // Fallback: initialiser manuellement le scroll si besoin
+        initialiserScrollFormulesFallback();
+    }
+}
+
+function initialiserScrollFormulesFallback() {
+    const formules = document.querySelectorAll('.result-formula');
+    
+    formules.forEach(formule => {
+        const contentWidth = formule.scrollWidth;
+        const containerWidth = formule.clientWidth;
+        
+        if (contentWidth > containerWidth) {
+            formule.classList.add('scrollable');
+            
+            const hint = document.createElement('span');
+            hint.className = 'scroll-hint';
+            hint.innerHTML = '⇄';
+            formule.appendChild(hint);
+            
+            formule.addEventListener('scroll', function() {
+                this.classList.add('scrolled');
+                const hint = this.querySelector('.scroll-hint');
+                if (hint) hint.style.display = 'none';
+            });
+        }
+        
+        if (window.innerWidth < 480 && contentWidth > containerWidth * 1.5) {
+            formule.classList.add('mobile-wrap');
+        }
+    });
 }
 
 function afficherErreurRecherche() {
@@ -289,6 +318,7 @@ function afficherErreurRecherche() {
 }
 
 function initialiserActionsResultats() {
+    // Boutons favoris
     document.querySelectorAll('.action-fav').forEach(bouton => {
         bouton.addEventListener('click', function() {
             const id = this.dataset.id;
@@ -296,6 +326,7 @@ function initialiserActionsResultats() {
         });
     });
     
+    // Boutons copie
     document.querySelectorAll('.action-copy').forEach(bouton => {
         bouton.addEventListener('click', function() {
             const formule = this.dataset.formula;
@@ -310,10 +341,12 @@ function toggleFavori(id, bouton) {
         icone.classList.remove('far');
         icone.classList.add('fas');
         bouton.style.color = '#f59e0b';
+        console.log(`⭐ Ajouté aux favoris: ${id}`);
     } else {
         icone.classList.remove('fas');
         icone.classList.add('far');
         bouton.style.color = '';
+        console.log(`☆ Retiré des favoris: ${id}`);
     }
     
     bouton.style.transform = 'scale(1.2)';
@@ -327,6 +360,8 @@ async function copierFormule(formule, bouton) {
         const originalHTML = bouton.innerHTML;
         bouton.innerHTML = '<i class="fas fa-check"></i>';
         bouton.style.color = '#10b981';
+        
+        console.log('📋 Formule copiée:', formule.substring(0, 50) + '...');
         
         setTimeout(() => {
             bouton.innerHTML = originalHTML;
@@ -348,25 +383,52 @@ function forcerRecherche() {
     }
 }
 
+function rafraichirAffichage() {
+    if (elements.searchInput.value.trim().length > 0) {
+        // Réappliquer KaTeX aux résultats existants
+        if (window.KatexManager) {
+            if (window.KatexManager.estDisponible()) {
+                window.KatexManager.appliquerKaTeXAuxResultats();
+            } else if (window.KatexManager.appliquerFallbackUnicode) {
+                window.KatexManager.appliquerFallbackUnicode();
+            }
+            
+            if (window.KatexManager.initialiserScrollFormules) {
+                window.KatexManager.initialiserScrollFormules();
+            }
+        }
+    }
+}
+
 function initialiserFiltres() {
-    console.log('🔧 Initialisation filtres...');
+    console.log('🔧 Initialisation du gestionnaire de filtres...');
     
     if (!initialiserElements()) {
-        console.error('❌ Impossible d\'initialiser les filtres');
+        console.error('❌ Impossible d\'initialiser les éléments DOM');
+        setTimeout(initialiserFiltres, 100);
         return;
     }
     
     initialiserEcouteurs();
     
-    // Appliquer l'état initial
+    // S'assurer que tous les filtres par défaut sont cochés
     elements.filterInputs.forEach(input => {
         const filtre = input.closest('.filter-checkbox').dataset.filter;
-        if (!filtresActifs.has(filtre)) {
-            input.checked = false;
+        if (filtresActifs.has(filtre)) {
+            input.checked = true;
         }
     });
     
-    console.log('✅ Filtres initialisés - Ordre fixe activé');
+    console.log('✅ Filtres initialisés');
+    console.log('📚 Dépendances disponibles:');
+    console.log('   - RechercheEngine:', window.RechercheEngine ? '✅' : '❌');
+    console.log('   - KatexManager:', window.KatexManager ? '✅' : '❌');
+    
+    // Vérifier si KatexManager est disponible, sinon l'initialiser
+    if (!window.KatexManager && typeof KatexManager === 'undefined') {
+        console.log('🔄 Tentative d\'initialisation de KaTeX...');
+        // On laisse katex.js s'initialiser automatiquement
+    }
 }
 
 window.FiltreManager = {
@@ -374,89 +436,24 @@ window.FiltreManager = {
     getFiltresActifs,
     forcerRecherche,
     lancerRecherche: lancerRechercheImmediate,
-    reinitialiserAffichage
+    reinitialiserAffichage,
+    rafraichirAffichage,
+    
+    // Utilitaires
+    afficherMessageFiltres,
+    afficherResultats,
+    
+    // Debug
+    getEtat: () => ({
+        filtresActifs: Array.from(filtresActifs),
+        rechercheEnCours,
+        elementsInitialises: !!elements.searchInput
+    })
 };
 
+// Initialisation
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initialiserFiltres);
 } else {
     initialiserFiltres();
-}
-// Ajouter cette fonction à filtre.js
-function initialiserScrollFormules() {
-    const formules = document.querySelectorAll('.result-formula');
-    
-    formules.forEach(formule => {
-        // Vérifier si le contenu dépasse
-        const contentWidth = formule.scrollWidth;
-        const containerWidth = formule.clientWidth;
-        
-        if (contentWidth > containerWidth) {
-            formule.classList.add('scrollable');
-            
-            // Ajouter un indicateur visuel
-            const hint = document.createElement('span');
-            hint.className = 'scroll-hint';
-            hint.innerHTML = '⇄';
-            formule.appendChild(hint);
-            
-            // Détecter quand l'utilisateur scroll
-            formule.addEventListener('scroll', function() {
-                this.classList.add('scrolled');
-                const hint = this.querySelector('.scroll-hint');
-                if (hint) hint.style.display = 'none';
-            });
-            
-            // Swipe sur mobile
-            let startX = 0;
-            let scrollLeft = 0;
-            
-            formule.addEventListener('touchstart', function(e) {
-                startX = e.touches[0].pageX;
-                scrollLeft = this.scrollLeft;
-            });
-            
-            formule.addEventListener('touchmove', function(e) {
-                const x = e.touches[0].pageX;
-                const walk = (x - startX) * 2;
-                this.scrollLeft = scrollLeft - walk;
-                e.preventDefault();
-            });
-        }
-        
-        // Sur mobile très petit, activer le wrap
-        if (window.innerWidth < 480 && contentWidth > containerWidth * 1.5) {
-            formule.classList.add('mobile-wrap');
-        }
-    });
-}
-
-// Appeler cette fonction après affichage des résultats
-function afficherResultats(resultats, termeRecherche) {
-    // ... code existant ...
-    
-    if (elements.resultsContainer && window.RechercheEngine) {
-        const htmlResultats = window.RechercheEngine.formaterResultatsPourHTML(resultats);
-        elements.resultsContainer.innerHTML = htmlResultats;
-        
-        initialiserActionsResultats();
-        
-        // Animation d'apparition
-        const cards = elements.resultsContainer.querySelectorAll('.result-card');
-        cards.forEach((card, index) => {
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(20px)';
-            
-            setTimeout(() => {
-                card.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-                card.style.opacity = '1';
-                card.style.transform = 'translateY(0)';
-            }, index * 30);
-        });
-        
-        // Initialiser le scroll après un petit délai
-        setTimeout(() => {
-            initialiserScrollFormules();
-        }, 100);
-    }
 }
