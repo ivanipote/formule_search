@@ -1,0 +1,74 @@
+//InteretSimple//
+TITRE : Intérêt simple
+FORMULE: I = C × i × t
+DESCRIPTION : Calcul d'intérêts simples en finance.
+
+//InteretCompose//
+TITRE : Intérêt composé
+FORMULE: C_f = C_i × (1 + i)ⁿ
+DESCRIPTION : Capital final avec intérêts capitalisés.
+
+//MargeCommerciale//
+TITRE : Marge commerciale
+FORMULE: Marge = PV_HT - PA_HT
+DESCRIPTION : Différence entre prix de vente et prix d'achat hors taxes.
+
+//TauxMarge//
+TITRE : Taux de marge
+FORMULE: Tx_marge = [(PV_HT - PA_HT) / PA_HT] × 100
+DESCRIPTION : Pourcentage de marge par rapport au prix d'achat.
+
+//TauxMarque//
+TITRE : Taux de marque
+FORMULE: Tx_marque = [(PV_HT - PA_HT) / PV_HT] × 100
+DESCRIPTION : Pourcentage de marge par rapport au prix de vente.
+
+//Rentabilite//
+TITRE : Taux de rentabilité
+FORMULE: R = (Bénéfice / Investissement) × 100
+DESCRIPTION : Retour sur investissement en pourcentage.
+
+//AmortissementLineaire//
+TITRE : Amortissement linéaire
+FORMULE: Annuité = Valeur / Durée
+DESCRIPTION : Amortissement constant sur la durée.
+
+//PointMort//
+TITRE : Point mort
+FORMULE: Q = CF / (PV - CV)
+DESCRIPTION : Quantité à vendre pour couvrir les coûts fixes.
+
+//Productivite//
+TITRE : Productivité du travail
+FORMULE: P = Production / Heures_travaillées
+DESCRIPTION : Mesure de l'efficacité productive.
+
+//ROI//
+TITRE : Return on Investment (ROI)
+FORMULE: ROI = [(Gain - Coût) / Coût] × 100
+DESCRIPTION : Retour sur investissement.
+
+//MasseSalaire//
+TITRE : Masse salariale
+FORMULE: MS = Σ(Salaires_bruts)
+DESCRIPTION : Somme de tous les salaires bruts versés.
+
+//CoutRevient//
+TITRE : Coût de revient
+FORMULE: CR = Coûts_directs + Coûts_indirects
+DESCRIPTION : Coût total de production d'un bien ou service.
+
+//MargeBrute//
+TITRE : Marge brute
+FORMULE: MB = Chiffre_affaires - Coût_des_marchandises_vendues
+DESCRIPTION : Différence entre ventes et coût des produits vendus.
+
+//TauxRotation//
+TITRE : Taux de rotation des stocks
+FORMULE: TR = (Valeur_des_ventes / Stock_moyen) × 100
+DESCRIPTION : Indicateur d'efficacité de gestion des stocks.
+
+//CAF//
+TITRE : Capacité d'autofinancement
+FORMULE: CAF = Résultat_net + Dotations_aux_amortissements
+DESCRIPTION : Ressources générées par l'activité de l'entreprise.

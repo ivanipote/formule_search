@@ -1,11 +1,79 @@
 //Pythagore//
 TITRE : Théorème de Pythagore
 FORMULE: a² + b² = c²
-DESCRIPTION : Dans un triangle rectangle, le carré de l'hypoténuse...
+DESCRIPTION : Dans un triangle rectangle, le carré de l'hypoténuse est égal à la somme des carrés des deux autres côtés.
 
-//DérivéePuissance//
-TITRE : Dérivée d'une fonction puissance  
+//IdentiteRemarquable1//
+TITRE : Carré d'une somme
+FORMULE: (a + b)² = a² + 2ab + b²
+DESCRIPTION : Première identité remarquable, utilisée en algèbre.
+
+//IdentiteRemarquable2//
+TITRE : Carré d'une différence
+FORMULE: (a - b)² = a² - 2ab + b²
+DESCRIPTION : Deuxième identité remarquable.
+
+//DeriveePuissance//
+TITRE : Dérivée d'une fonction puissance
 FORMULE: d/dx (xⁿ) = n·xⁿ⁻¹
-DESCRIPTION : Règle de dérivation des fonctions puissance...
+DESCRIPTION : Règle de dérivation des fonctions puissance, fondamentale en analyse.
 
-[etc. - 10 formules par fichier]
+//IntegralePuissance//
+TITRE : Intégrale d'une puissance
+FORMULE: ∫ xⁿ dx = xⁿ⁺¹/(n+1) + C (pour n ≠ -1)
+DESCRIPTION : Formule d'intégration des fonctions puissance.
+
+//AireCercle//
+TITRE : Aire d'un cercle
+FORMULE: A = πr²
+DESCRIPTION : Aire d'un cercle en fonction de son rayon.
+
+//PerimetreCercle//
+TITRE : Périmètre d'un cercle
+FORMULE: P = 2πr
+DESCRIPTION : Périmètre (circonférence) d'un cercle.
+
+//EquationQuadrartique//
+TITRE : Équation quadratique
+FORMULE: ax² + bx + c = 0 ⇒ x = [-b ± √(b² - 4ac)]/(2a)
+DESCRIPTION : Solution de l'équation du second degré.
+
+//LogarithmeNeperien//
+TITRE : Dérivée du logarithme népérien
+FORMULE: d/dx ln(x) = 1/x
+DESCRIPTION : Dérivée de la fonction logarithme népérien.
+
+//Exponentielle//
+TITRE : Dérivée de l'exponentielle
+FORMULE: d/dx eˣ = eˣ
+DESCRIPTION : La fonction exponentielle est sa propre dérivée.
+
+//IdentiteEuler//
+TITRE : Identité d'Euler
+FORMULE: e^(iπ) + 1 = 0
+DESCRIPTION : Relation entre 5 constantes fondamentales : e, i, π, 1, 0.
+
+//SommeEntiers//
+TITRE : Somme des n premiers entiers
+FORMULE: ∑_{k=1}ⁿ k = n(n+1)/2
+DESCRIPTION : Formule de la somme arithmétique.
+
+//VolumeSphere//
+TITRE : Volume d'une sphère
+FORMULE: V = (4/3)πr³
+DESCRIPTION : Volume d'une sphère en fonction de son rayon.
+
+//TheoremeThales//
+TITRE : Théorème de Thalès
+FORMULE: AB/AC = A'B'/A'C'
+DESCRIPTION : Rapport des longueurs dans des triangles semblables.
+
+//FormuleLongue//
+TITRE : Formule financière complexe
+FORMULE: VAN = ∑(t=1 à n) [Ft / (1 + i)^t] - I₀ + [VR / (1 + i)^n]
+DESCRIPTION : Valeur Actuelle Nette avec valeur résiduelle.
+
+//AutreFormuleLongue//
+TITRE : Équation mathématique complexe
+FORMULE: ∫₀^∞ [sin(ax)sin(bx)/x²] dx = (π/2)min(a,b) pour a,b > 0
+DESCRIPTION : Intégrale de Dirichlet généralisée.

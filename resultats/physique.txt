@@ -1,0 +1,69 @@
+//Einstein//
+TITRE : Relation masse-énergie
+FORMULE: E = m c^2
+DESCRIPTION : Équivalence entre masse et énergie.
+
+//Newton2//
+TITRE : Deuxième loi de Newton
+FORMULE: \sum F = m a
+DESCRIPTION : Somme des forces = masse × accélération.
+
+//GravitationUniverselle//
+TITRE : Loi de la gravitation universelle
+FORMULE: F = G \frac{m_1 m_2}{r^2}
+DESCRIPTION : Force entre deux masses.
+
+//LoiOhm//
+TITRE : Loi d'Ohm
+FORMULE: U = R I
+DESCRIPTION : Tension = résistance × intensité.
+
+//PuissanceElectrique//
+TITRE : Puissance électrique
+FORMULE: P = U I
+DESCRIPTION : Puissance = tension × intensité.
+
+//EnergieCinetique//
+TITRE : Énergie cinétique
+FORMULE: E_c = \frac{1}{2} m v^2
+DESCRIPTION : Énergie due au mouvement.
+
+//EnergiePotentielle//
+TITRE : Énergie potentielle
+FORMULE: E_p = m g h
+DESCRIPTION : Énergie de position.
+
+//Pression//
+TITRE : Pression
+FORMULE: P = \frac{F}{S}
+DESCRIPTION : Pression = force / surface.
+
+//Archimede//
+TITRE : Poussée d'Archimède
+FORMULE: F_A = \rho V g
+DESCRIPTION : Force de flottabilité.
+
+//Coulomb//
+TITRE : Loi de Coulomb
+FORMULE: F = k \frac{q_1 q_2}{r^2}
+DESCRIPTION : Force électrostatique.
+
+//Dilatation//
+TITRE : Dilatation thermique
+FORMULE: \Delta L = \alpha L_0 \Delta T
+DESCRIPTION : Variation de longueur.
+
+//Vitesse//
+TITRE : Vitesse moyenne
+FORMULE: v = \frac{\Delta x}{\Delta t}
+DESCRIPTION : Vitesse = déplacement / temps.
+
+//SnellDescartes//
+TITRE : Loi de Snell-Descartes
+FORMULE: n_1 \sin(\theta_1) = n_2 \sin(\theta_2)
+DESCRIPTION : Loi de la réfraction.
+
+//Lentilles//
+TITRE : Formule des lentilles
+FORMULE: \frac{1}{f} = \frac{1}{p'} - \frac{1}{p}
+DESCRIPTION : Relation de conjugaison.
