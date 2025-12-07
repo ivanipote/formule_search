@@ -1,0 +1,11 @@
+//Pythagore//
+TITRE : Théorème de Pythagore
+FORMULE: a² + b² = c²
+DESCRIPTION : Dans un triangle rectangle, le carré de l'hypoténuse...
+
+//DérivéePuissance//
+TITRE : Dérivée d'une fonction puissance  
+FORMULE: d/dx (xⁿ) = n·xⁿ⁻¹
+DESCRIPTION : Règle de dérivation des fonctions puissance...
+
+[etc. - 10 formules par fichier]
