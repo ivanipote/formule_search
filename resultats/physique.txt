@@ -1,69 +1,119 @@
-//Einstein//
-TITRE : Relation masse-énergie
-FORMULE: E = m c^2
-DESCRIPTION : Équivalence entre masse et énergie.
-
-//Newton2//
-TITRE : Deuxième loi de Newton
-FORMULE: \sum F = m a
-DESCRIPTION : Somme des forces = masse × accélération.
-
-//GravitationUniverselle//
-TITRE : Loi de la gravitation universelle
-FORMULE: F = G \frac{m_1 m_2}{r^2}
-DESCRIPTION : Force entre deux masses.
-
-//LoiOhm//
+// loi d'ohm
 TITRE : Loi d'Ohm
-FORMULE: U = R I
-DESCRIPTION : Tension = résistance × intensité.
+FORMULE: U = R × I
+DESCRIPTION : Relation fondamentale entre tension, résistance et intensité électrique.
 
-//PuissanceElectrique//
-TITRE : Puissance électrique
-FORMULE: P = U I
-DESCRIPTION : Puissance = tension × intensité.
-
-//EnergieCinetique//
+// énergie cinétique
 TITRE : Énergie cinétique
-FORMULE: E_c = \frac{1}{2} m v^2
-DESCRIPTION : Énergie due au mouvement.
+FORMULE: E_c = ½ mv²
+DESCRIPTION : Énergie due au mouvement d'un corps de masse m à vitesse v.
 
-//EnergiePotentielle//
-TITRE : Énergie potentielle
-FORMULE: E_p = m g h
-DESCRIPTION : Énergie de position.
+// force gravitationnelle
+TITRE : Loi de la gravitation universelle
+FORMULE: F = G (m₁ m₂)/r²
+DESCRIPTION : Force d'attraction entre deux masses séparées par une distance r.
 
-//Pression//
-TITRE : Pression
-FORMULE: P = \frac{F}{S}
-DESCRIPTION : Pression = force / surface.
+// puissance électrique
+TITRE : Puissance électrique en courant continu
+FORMULE: P = U × I
+DESCRIPTION : Puissance consommée ou fournie par un dipôle électrique.
 
-//Archimede//
+// équation d'état des gaz parfaits
+TITRE : Loi des gaz parfaits
+FORMULE: PV = nRT
+DESCRIPTION : Relation entre pression, volume, quantité de matière et température.
+
+// énergie potentielle
+TITRE : Énergie potentielle de pesanteur
+FORMULE: E_p = mgh
+DESCRIPTION : Énergie liée à la position d'un corps dans un champ gravitationnel.
+
+// loi de Coulomb
+TITRE : Force électrostatique
+FORMULE: F = k (|q₁ q₂|)/r²
+DESCRIPTION : Force entre deux charges électriques ponctuelles.
+
+// équation d'Einstein
+TITRE : Équivalence masse-énergie
+FORMULE: E = mc²
+DESCRIPTION : Relation fondamentale entre masse et énergie.
+
+// deuxième loi de Newton
+TITRE : Principe fondamental de la dynamique
+FORMULE: F = m × a
+DESCRIPTION : Relation entre force, masse et accélération.
+
+// loi de Snell-Descartes
+TITRE : Loi de la réfraction
+FORMULE: n₁ sin θ₁ = n₂ sin θ₂
+DESCRIPTION : Relation entre les angles d'incidence et de réfraction.
+
+// capacité thermique
+TITRE : Capacité thermique massique
+FORMULE: Q = m × c × ΔT
+DESCRIPTION : Énergie nécessaire pour élever la température d'une masse.
+
+// force de Lorentz
+TITRE : Force de Lorentz
+FORMULE: F = q(E + v × B)
+DESCRIPTION : Force subie par une charge dans un champ électromagnétique.
+
+// loi de Stefan-Boltzmann
+TITRE : Puissance rayonnée d'un corps noir
+FORMULE: P = σ × A × T⁴
+DESCRIPTION : Puissance totale rayonnée par unité de surface.
+
+// équation de Schrödinger
+TITRE : Équation de Schrödinger indépendante du temps
+FORMULE: Ĥψ = Eψ
+DESCRIPTION : Équation fondamentale de la mécanique quantique.
+
+// loi de Hooke
+TITRE : Loi de Hooke pour les ressorts
+FORMULE: F = -k × x
+DESCRIPTION : Force de rappel d'un ressort déformé.
+
+// principe d'Archimède
 TITRE : Poussée d'Archimède
-FORMULE: F_A = \rho V g
-DESCRIPTION : Force de flottabilité.
+FORMULE: Π = ρ × V × g
+DESCRIPTION : Force exercée par un fluide sur un corps immergé.
 
-//Coulomb//
-TITRE : Loi de Coulomb
-FORMULE: F = k \frac{q_1 q_2}{r^2}
-DESCRIPTION : Force électrostatique.
+// équation de continuité
+TITRE : Équation de continuité en mécanique des fluides
+FORMULE: A₁ × v₁ = A₂ × v₂
+DESCRIPTION : Conservation du débit dans un écoulement.
 
-//Dilatation//
-TITRE : Dilatation thermique
-FORMULE: \Delta L = \alpha L_0 \Delta T
-DESCRIPTION : Variation de longueur.
+// loi de Planck
+TITRE : Loi de Planck pour le corps noir
+FORMULE: B_ν(T) = (2hν³/c²) × 1/(e^{hν/(kT)} - 1)
+DESCRIPTION : Distribution spectrale du rayonnement thermique.
 
-//Vitesse//
+// effet Doppler
+TITRE : Effet Doppler pour le son
+FORMULE: f' = f × (v ± v_o)/(v ± v_s)
+DESCRIPTION : Variation de fréquence perçue due au mouvement.
+
+// équation de Bernoulli
+TITRE : Théorème de Bernoulli
+FORMULE: P + ½ρv² + ρgh = constante
+DESCRIPTION : Conservation de l'énergie dans un écoulement parfait.
+
+// loi de Fourier
+TITRE : Loi de Fourier pour la conduction thermique
+FORMULE: φ = -λ × A × (dT/dx)
+DESCRIPTION : Flux thermique par conduction.
+
+// formule de vitesse
 TITRE : Vitesse moyenne
-FORMULE: v = \frac{\Delta x}{\Delta t}
-DESCRIPTION : Vitesse = déplacement / temps.
+FORMULE: v = Δx/Δt
+DESCRIPTION : Relation entre distance parcourue et temps.
 
-//SnellDescartes//
-TITRE : Loi de Snell-Descartes
-FORMULE: n_1 \sin(\theta_1) = n_2 \sin(\theta_2)
-DESCRIPTION : Loi de la réfraction.
+// loi des mailles
+TITRE : Loi des mailles de Kirchhoff
+FORMULE: ∑ U = 0 dans une maille fermée
+DESCRIPTION : Somme algébrique des tensions dans une maille est nulle.
 
-//Lentilles//
-TITRE : Formule des lentilles
-FORMULE: \frac{1}{f} = \frac{1}{p'} - \frac{1}{p}
-DESCRIPTION : Relation de conjugaison.
+// loi des nœuds
+TITRE : Loi des nœuds de Kirchhoff
+FORMULE: ∑ I = 0 à un nœud
+DESCRIPTION : Somme algébrique des courants entrant et sortant d'un nœud.

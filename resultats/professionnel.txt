@@ -1,74 +1,134 @@
-//InteretSimple//
-TITRE : Intérêt simple
-FORMULE: I = C × i × t
-DESCRIPTION : Calcul d'intérêts simples en finance.
+// loi d'ohm électromécanique
+TITRE : Loi d'Ohm généralisée
+FORMULE: U = R × I + E
+DESCRIPTION : Tension aux bornes d'un moteur avec force contre-électromotrice.
 
-//InteretCompose//
-TITRE : Intérêt composé
-FORMULE: C_f = C_i × (1 + i)ⁿ
-DESCRIPTION : Capital final avec intérêts capitalisés.
+// puissance mécanique
+TITRE : Puissance mécanique d'un moteur
+FORMULE: P_méca = C × ω
+DESCRIPTION : Puissance en fonction du couple et de la vitesse angulaire.
 
-//MargeCommerciale//
-TITRE : Marge commerciale
-FORMULE: Marge = PV_HT - PA_HT
-DESCRIPTION : Différence entre prix de vente et prix d'achat hors taxes.
+// rendement moteur
+TITRE : Rendement d'un moteur électrique
+FORMULE: η = P_méca/P_élec × 100%
+DESCRIPTION : Rapport entre puissance mécanique utile et puissance électrique absorbée.
 
-//TauxMarge//
-TITRE : Taux de marge
-FORMULE: Tx_marge = [(PV_HT - PA_HT) / PA_HT] × 100
-DESCRIPTION : Pourcentage de marge par rapport au prix d'achat.
+// couple moteur
+TITRE : Couple d'un moteur à courant continu
+FORMULE: C = k × Φ × I
+DESCRIPTION : Couple proportionnel au flux et au courant d'induit.
 
-//TauxMarque//
-TITRE : Taux de marque
-FORMULE: Tx_marque = [(PV_HT - PA_HT) / PV_HT] × 100
-DESCRIPTION : Pourcentage de marge par rapport au prix de vente.
+// vitesse moteur
+TITRE : Vitesse d'un moteur à courant continu
+FORMULE: N = (U - R×I)/(k×Φ)
+DESCRIPTION : Vitesse en fonction de la tension, résistance et flux.
 
-//Rentabilite//
-TITRE : Taux de rentabilité
-FORMULE: R = (Bénéfice / Investissement) × 100
-DESCRIPTION : Retour sur investissement en pourcentage.
+// force électromagnétique
+TITRE : Force électromagnétique dans un actionneur
+FORMULE: F = (B² × A)/(2μ₀)
+DESCRIPTION : Force développée par un électroaimant.
 
-//AmortissementLineaire//
-TITRE : Amortissement linéaire
-FORMULE: Annuité = Valeur / Durée
-DESCRIPTION : Amortissement constant sur la durée.
+// énergie cinétique rotation
+TITRE : Énergie cinétique de rotation
+FORMULE: E_c = ½ J × ω²
+DESCRIPTION : Énergie d'un corps en rotation avec moment d'inertie J.
 
-//PointMort//
-TITRE : Point mort
-FORMULE: Q = CF / (PV - CV)
-DESCRIPTION : Quantité à vendre pour couvrir les coûts fixes.
+// couple accélération
+TITRE : Couple d'accélération
+FORMULE: C = J × dω/dt
+DESCRIPTION : Couple nécessaire pour accélérer une masse en rotation.
 
-//Productivite//
-TITRE : Productivité du travail
-FORMULE: P = Production / Heures_travaillées
-DESCRIPTION : Mesure de l'efficacité productive.
+// puissance apparente
+TITRE : Puissance apparente en triphasé
+FORMULE: S = √3 × U × I
+DESCRIPTION : Puissance apparente dans un système triphasé équilibré.
 
-//ROI//
-TITRE : Return on Investment (ROI)
-FORMULE: ROI = [(Gain - Coût) / Coût] × 100
-DESCRIPTION : Retour sur investissement.
+// puissance active triphasé
+TITRE : Puissance active triphasée
+FORMULE: P = √3 × U × I × cos φ
+DESCRIPTION : Puissance utile dans une installation triphasée.
 
-//MasseSalaire//
-TITRE : Masse salariale
-FORMULE: MS = Σ(Salaires_bruts)
-DESCRIPTION : Somme de tous les salaires bruts versés.
+// facteur de puissance
+TITRE : Facteur de puissance
+FORMULE: cos φ = P/S
+DESCRIPTION : Rapport entre puissance active et puissance apparente.
 
-//CoutRevient//
-TITRE : Coût de revient
-FORMULE: CR = Coûts_directs + Coûts_indirects
-DESCRIPTION : Coût total de production d'un bien ou service.
+// constante de temps moteur
+TITRE : Constante de temps électromécanique
+FORMULE: τ = J × R/(k²)
+DESCRIPTION : Temps caractéristique de réponse d'un moteur.
 
-//MargeBrute//
-TITRE : Marge brute
-FORMULE: MB = Chiffre_affaires - Coût_des_marchandises_vendues
-DESCRIPTION : Différence entre ventes et coût des produits vendus.
+// chute de tension ligne
+TITRE : Chute de tension en ligne
+FORMULE: ΔU = R_ligne × I × L
+DESCRIPTION : Perte de tension dans une ligne électrique.
 
-//TauxRotation//
-TITRE : Taux de rotation des stocks
-FORMULE: TR = (Valeur_des_ventes / Stock_moyen) × 100
-DESCRIPTION : Indicateur d'efficacité de gestion des stocks.
+// puissance perdue joules
+TITRE : Pertes joules dans un moteur
+FORMULE: P_j = R × I²
+DESCRIPTION : Puissance dissipée par effet Joule dans les enroulements.
 
-//CAF//
-TITRE : Capacité d'autofinancement
-FORMULE: CAF = Résultat_net + Dotations_aux_amortissements
-DESCRIPTION : Ressources générées par l'activité de l'entreprise.
+// couple résistant
+TITRE : Couple résistant d'une charge
+FORMULE: C_r = C_0 + k_v × ω
+DESCRIPTION : Couple résistant avec composante constante et visqueuse.
+
+// vitesse synchrone
+TITRE : Vitesse synchrone d'un moteur asynchrone
+FORMULE: N_s = (60 × f)/p
+DESCRIPTION : Vitesse de rotation du champ magnétique tournant.
+
+// glissement moteur
+TITRE : Glissement d'un moteur asynchrone
+FORMULE: g = (N_s - N)/N_s × 100%
+DESCRIPTION : Écart relatif entre vitesse synchrone et vitesse rotor.
+
+// couple maximal
+TITRE : Couple maximal d'un moteur asynchrone
+FORMULE: C_max = (3 × U²)/(2 × ω_s × X)
+DESCRIPTION : Couple maximal que peut développer un moteur.
+
+// rendement transformateur
+TITRE : Rendement d'un transformateur
+FORMULE: η = (P_s)/(P_s + P_fer + P_cu) × 100%
+DESCRIPTION : Rapport puissance secondaire sur puissance totale.
+
+// puissance calorifique
+TITRE : Puissance calorifique dégagée
+FORMULE: Q = m × c × Δθ/Δt
+DESCRIPTION : Puissance nécessaire pour chauffer une masse.
+
+// section câble électrique
+TITRE : Section minimale d'un câble
+FORMULE: S = (ρ × L × I)/ΔU
+DESCRIPTION : Calcul de section en fonction du courant et chute de tension.
+
+// couple démarrage
+TITRE : Couple de démarrage d'un moteur
+FORMULE: C_d = k × U²/R
+DESCRIPTION : Couple initial lors du démarrage d'un moteur.
+
+// vitesse angulaire
+TITRE : Relation vitesse linéaire/angulaire
+FORMULE: v = ω × r
+DESCRIPTION : Conversion entre vitesse linéaire et vitesse angulaire.
+
+// puissance hydraulique
+TITRE : Puissance hydraulique d'une pompe
+FORMULE: P_h = ρ × g × Q × H
+DESCRIPTION : Puissance nécessaire pour élever un débit à une hauteur.
+
+// fréquence rotation
+TITRE : Fréquence de rotation
+FORMULE: n = (60 × ω)/(2π)
+DESCRIPTION : Conversion vitesse angulaire en tours par minute.
+
+// raideur ressort
+TITRE : Raideur d'un ressort
+FORMULE: k = (G × d⁴)/(8 × D³ × n)
+DESCRIPTION : Raideur en fonction des caractéristiques géométriques.
+
+// flux magnétique
+TITRE : Flux magnétique dans un circuit
+FORMULE: Φ = B × A × cos θ
+DESCRIPTION : Flux à travers une surface dans un champ magnétique.

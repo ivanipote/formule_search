@@ -1,79 +1,124 @@
-//Pythagore//
-TITRE : Théorème de Pythagore
-FORMULE: a² + b² = c²
-DESCRIPTION : Dans un triangle rectangle, le carré de l'hypoténuse est égal à la somme des carrés des deux autres côtés.
+// formule avec barre de fraction
+TITRE : Loi des fractions en algèbre
+FORMULE: (a+b)/(c+d) = (a/c) + (b/d) sous certaines conditions
+DESCRIPTION : Cette formule montre comment décomposer une fraction complexe en somme de fractions simples.
 
-//IdentiteRemarquable1//
-TITRE : Carré d'une somme
-FORMULE: (a + b)² = a² + 2ab + b²
-DESCRIPTION : Première identité remarquable, utilisée en algèbre.
+// formule avec exposants
+TITRE : Identité remarquable du carré
+FORMULE: (a+b)² = a² + 2ab + b²
+DESCRIPTION : Formule fondamentale pour développer le carré d'une somme.
 
-//IdentiteRemarquable2//
-TITRE : Carré d'une différence
-FORMULE: (a - b)² = a² - 2ab + b²
-DESCRIPTION : Deuxième identité remarquable.
+// formule avec multiplication
+TITRE : Produit de deux sommes
+FORMULE: (a+b)(c+d) = ac + ad + bc + bd
+DESCRIPTION : Développement du produit de deux binômes selon la double distributivité.
 
-//DeriveePuissance//
-TITRE : Dérivée d'une fonction puissance
-FORMULE: d/dx (xⁿ) = n·xⁿ⁻¹
-DESCRIPTION : Règle de dérivation des fonctions puissance, fondamentale en analyse.
+// formule avec racine carrée
+TITRE : Racine carrée d'un produit
+FORMULE: √(ab) = √a × √b
+DESCRIPTION : Propriété de la racine carrée sur un produit.
 
-//IntegralePuissance//
+// formule avec intégrale
 TITRE : Intégrale d'une puissance
 FORMULE: ∫ xⁿ dx = xⁿ⁺¹/(n+1) + C (pour n ≠ -1)
-DESCRIPTION : Formule d'intégration des fonctions puissance.
+DESCRIPTION : Formule fondamentale pour l'intégration des fonctions puissance.
 
-//AireCercle//
-TITRE : Aire d'un cercle
-FORMULE: A = πr²
-DESCRIPTION : Aire d'un cercle en fonction de son rayon.
-
-//PerimetreCercle//
-TITRE : Périmètre d'un cercle
-FORMULE: P = 2πr
-DESCRIPTION : Périmètre (circonférence) d'un cercle.
-
-//EquationQuadrartique//
-TITRE : Équation quadratique
-FORMULE: ax² + bx + c = 0 ⇒ x = [-b ± √(b² - 4ac)]/(2a)
-DESCRIPTION : Solution de l'équation du second degré.
-
-//LogarithmeNeperien//
-TITRE : Dérivée du logarithme népérien
-FORMULE: d/dx ln(x) = 1/x
-DESCRIPTION : Dérivée de la fonction logarithme népérien.
-
-//Exponentielle//
-TITRE : Dérivée de l'exponentielle
-FORMULE: d/dx eˣ = eˣ
-DESCRIPTION : La fonction exponentielle est sa propre dérivée.
-
-//IdentiteEuler//
-TITRE : Identité d'Euler
-FORMULE: e^(iπ) + 1 = 0
-DESCRIPTION : Relation entre 5 constantes fondamentales : e, i, π, 1, 0.
-
-//SommeEntiers//
+// formule avec somme
 TITRE : Somme des n premiers entiers
-FORMULE: ∑_{k=1}ⁿ k = n(n+1)/2
-DESCRIPTION : Formule de la somme arithmétique.
+FORMULE: ∑_{k=1}^{n} k = n(n+1)/2
+DESCRIPTION : Formule pour calculer la somme des n premiers nombres entiers.
 
-//VolumeSphere//
-TITRE : Volume d'une sphère
-FORMULE: V = (4/3)πr³
-DESCRIPTION : Volume d'une sphère en fonction de son rayon.
+// formule avec limites
+TITRE : Limite remarquable exponentielle
+FORMULE: lim_{x→0} (eˣ - 1)/x = 1
+DESCRIPTION : Limite fondamentale pour la fonction exponentielle.
 
-//TheoremeThales//
-TITRE : Théorème de Thalès
-FORMULE: AB/AC = A'B'/A'C'
-DESCRIPTION : Rapport des longueurs dans des triangles semblables.
+// formule avec dérivée
+TITRE : Dérivée d'une puissance
+FORMULE: d/dx (xⁿ) = n xⁿ⁻¹
+DESCRIPTION : Règle de dérivation des fonctions puissance.
 
-//FormuleLongue//
-TITRE : Formule financière complexe
-FORMULE: VAN = ∑(t=1 à n) [Ft / (1 + i)^t] - I₀ + [VR / (1 + i)^n]
-DESCRIPTION : Valeur Actuelle Nette avec valeur résiduelle.
+// formule avec fraction complexe
+TITRE : Simplification de fraction
+FORMULE: (a/b)/(c/d) = (a×d)/(b×c)
+DESCRIPTION : Règle pour diviser deux fractions.
 
-//AutreFormuleLongue//
-TITRE : Équation mathématique complexe
-FORMULE: ∫₀^∞ [sin(ax)sin(bx)/x²] dx = (π/2)min(a,b) pour a,b > 0
-DESCRIPTION : Intégrale de Dirichlet généralisée.
+// formule avec équation quadratique
+TITRE : Solutions d'une équation quadratique
+FORMULE: ax² + bx + c = 0 ⇒ x = [-b ± √(b² - 4ac)]/(2a)
+DESCRIPTION : Formule quadratique pour résoudre les équations du second degré.
+
+// formule avec logarithme
+TITRE : Produit de logarithmes
+FORMULE: log(ab) = log a + log b
+DESCRIPTION : Propriété fondamentale des logarithmes.
+
+// formule avec exponentielle
+TITRE : Produit d'exponentielles
+FORMULE: eˣ × eʸ = eˣ⁺ʸ
+DESCRIPTION : Règle pour multiplier des exponentielles de même base.
+
+// formule avec trigonométrie
+TITRE : Identité trigonométrique fondamentale
+FORMULE: sin² θ + cos² θ = 1
+DESCRIPTION : Relation fondamentale entre sinus et cosinus.
+
+// formule avec dérivée de produit
+TITRE : Dérivée d'un produit
+FORMULE: d/dx (uv) = u'v + uv'
+DESCRIPTION : Règle du produit pour la dérivation.
+
+// formule avec intégrale définie
+TITRE : Intégrale définie d'une constante
+FORMULE: ∫_a^b k dx = k(b - a)
+DESCRIPTION : Formule pour l'intégrale d'une fonction constante.
+
+// formule avec factorisation
+TITRE : Différence de carrés
+FORMULE: a² - b² = (a - b)(a + b)
+DESCRIPTION : Formule de factorisation pour la différence de deux carrés.
+
+// formule avec puissance de puissance
+TITRE : Règle des puissances
+FORMULE: (aᵐ)ⁿ = aᵐⁿ
+DESCRIPTION : Règle pour élever une puissance à une autre puissance.
+
+// formule avec racine n-ième
+TITRE : Racine n-ième d'un produit
+FORMULE: ⁿ√(ab) = ⁿ√a × ⁿ√b
+DESCRIPTION : Propriété de la racine n-ième.
+
+// formule avec série géométrique
+TITRE : Somme d'une série géométrique
+FORMULE: ∑_{k=0}^{n-1} rᵏ = (1 - rⁿ)/(1 - r) pour r ≠ 1
+DESCRIPTION : Formule pour la somme des n premiers termes d'une suite géométrique.
+
+// formule avec dérivée de quotient
+TITRE : Dérivée d'un quotient
+FORMULE: d/dx (u/v) = (u'v - uv')/v²
+DESCRIPTION : Règle du quotient pour la dérivation.
+
+// formule avec intégration par parties
+TITRE : Intégration par parties
+FORMULE: ∫ u dv = uv - ∫ v du
+DESCRIPTION : Formule fondamentale pour l'intégration par parties.
+
+// formule avec nombre complexe
+TITRE : Module d'un nombre complexe
+FORMULE: |a + bi| = √(a² + b²)
+DESCRIPTION : Calcul du module d'un nombre complexe.
+
+// formule avec dérivée trigonométrique
+TITRE : Dérivée du sinus
+FORMULE: d/dx (sin x) = cos x
+DESCRIPTION : Dérivée de la fonction sinus.
+
+// formule avec matrice
+TITRE : Déterminant 2×2
+FORMULE: det[[a, b], [c, d]] = ad - bc
+DESCRIPTION : Calcul du déterminant d'une matrice 2×2.
+
+// formule avec limite trigonométrique
+TITRE : Limite trigonométrique fondamentale
+FORMULE: lim_{x→0} (sin x)/x = 1
+DESCRIPTION : Limite fondamentale pour la fonction sinus.
