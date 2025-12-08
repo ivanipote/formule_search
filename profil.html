@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Profil - mathX_searcher</title>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="logique.css">
+    <link rel="stylesheet" href="profil.css">
+    
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    
+    <!-- Configuration Firebase -->
+    <script src="firebase-config.js" defer></script>
+    
+    <!-- Scripts Core -->
+    <script src="auth.js" defer></script>
+    <script src="profil.js" defer></script>
+</head>
+<body class="profile-page">
+    <!-- Header -->
+    <header class="profile-header">
+        <div class="header-container">
+            <div class="header-left">
+                <div class="header-logo">
+                    <img src="logo.png" alt="mathX Logo" class="logo-img">
+                </div>
+            </div>
+            
+            <div class="header-center"></div>
+            
+            <div class="header-right">
+                <button class="hamburger-btn" id="hamburgerBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sidebar (séparé du header) -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <aside class="profile-sidebar" id="profileSidebar">
+        <div class="sidebar-header">
+            <button class="sidebar-close" id="sidebarClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <ul class="nav-list">
+                <li>
+                    <a href="index.html" class="nav-link">
+                        <i class="fas fa-home"></i>
+                        <span>Accueil</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="para.html" class="nav-link">
+                        <i class="fas fa-cog"></i>
+                        <span>Paramètres</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="fav.html" class="nav-link">
+                        <i class="fas fa-star"></i>
+                        <span>Favoris</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="his.html" class="nav-link">
+                        <i class="fas fa-history"></i>
+                        <span>Historique</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="profil.html" class="nav-link active">
+                        <i class="fas fa-user"></i>
+                        <span>Profil</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Contenu principal -->
+    <main class="profile-main">
+        <!-- Carte Profil -->
+        <div class="profile-card">
+            <!-- Section Avatar -->
+            <div class="avatar-section">
+                <div class="profile-avatar">
+                    <img id="userAvatar" src="" alt="Avatar">
+                </div>
+                <h2 id="userName">Chargement...</h2>
+            </div>
+            
+            <!-- Section Informations -->
+            <div class="info-section">
+                <div class="info-item">
+                    <div class="info-header">
+                        <i class="fas fa-user"></i>
+                        <h3>Nom Complet</h3>
+                    </div>
+                    <p class="info-content" id="userFullName">Chargement...</p>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-header">
+                        <i class="fas fa-graduation-cap"></i>
+                        <h3>Niveau Scolaire</h3>
+                    </div>
+                    <p class="info-content" id="userLevel">Non défini</p>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-header">
+                        <i class="fas fa-calendar-alt"></i>
+                        <h3>Date de Connexion</h3>
+                    </div>
+                    <p class="info-content" id="lastLogin">Aujourd'hui</p>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-header">
+                        <i class="fas fa-calendar-plus"></i>
+                        <h3>Membre Depuis</h3>
+                    </div>
+                    <p class="info-content" id="memberSince">Chargement...</p>
+                </div>
+            </div>
+            
+            <!-- Section Email (surlignée) -->
+            <div class="email-section">
+                <div class="email-header">
+                    <i class="fas fa-envelope"></i>
+                    <h3>Adresse Email</h3>
+                </div>
+                <p class="email-content" id="userEmail">Chargement...</p>
+            </div>
+        </div>
+
+        <!-- Bouton Déconnexion -->
+        <button class="logout-btn" id="logoutBtn">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Se déconnecter</span>
+        </button>
+    </main>
+
+    <script src="profil.js"></script>
+</body>
+</html>

@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion - mathX_searcher</title>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="logique.css">
+    <link rel="stylesheet" href="auth.css">
+    
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+    
+    <!-- Configuration Firebase -->
+    <script src="firebase-config.js" defer></script>
+    
+    <!-- Scripts Auth -->
+    <script src="auth.js" defer></script>
+    
+    <!-- Script Auth UI -->
+    <script src="auth-ui.js" defer></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="auth-header">
+        <div class="header-container">
+            <a href="index.html" class="logo-link">
+                <div class="logo">
+                    <i class="fas fa-square-root-alt"></i>
+                    <span>mathX</span>
+                </div>
+            </a>
+            
+            <div class="header-title">
+                <h1><i class="fas fa-user-circle"></i> Authentification</h1>
+            </div>
+            
+            <div class="header-info">
+                <span class="app-version">v1.0</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Conteneur principal -->
+    <main class="auth-container">
+        <!-- Carte d'authentification -->
+        <div class="auth-card">
+            <!-- En-tête avec onglets -->
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-tab="login">
+                    <i class="fas fa-sign-in-alt"></i> Connexion
+                </button>
+                <button class="auth-tab" data-tab="signup">
+                    <i class="fas fa-user-plus"></i> Inscription
+                </button>
+                <button class="auth-tab" data-tab="reset">
+                    <i class="fas fa-key"></i> Mot de passe oublié
+                </button>
+            </div>
+
+            <!-- Messages d'état -->
+            <div id="authMessages" class="auth-messages"></div>
+
+            <!-- Contenu des onglets -->
+            <div class="auth-content">
+                
+                <!-- ONGLET CONNEXION -->
+                <div id="loginTab" class="auth-tab-content active">
+                    <h2><i class="fas fa-sign-in-alt"></i> Connectez-vous</h2>
+                    <p class="auth-subtitle">Accédez à votre compte mathX_searcher</p>
+                    
+                    <!-- Formulaire connexion -->
+                    <form id="loginForm" class="auth-form">
+                        <div class="form-group">
+                            <label for="loginEmail">
+                                <i class="fas fa-envelope"></i> Adresse email
+                            </label>
+                            <input type="email" id="loginEmail" required 
+                                   placeholder="votre@email.com"
+                                   autocomplete="email">
+                            <div class="form-error" id="loginEmailError"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="loginPassword">
+                                <i class="fas fa-lock"></i> Mot de passe
+                            </label>
+                            <div class="password-input">
+                                <input type="password" id="loginPassword" required 
+                                       placeholder="Votre mot de passe"
+                                       autocomplete="current-password">
+                                <button type="button" class="toggle-password" data-target="loginPassword">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <div class="form-error" id="loginPasswordError"></div>
+                        </div>
+                        
+                        <div class="form-options">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="rememberMe">
+                                <span>Rester connecté</span>
+                            </label>
+                            <a href="#" class="forgot-link" data-tab="reset">
+                                Mot de passe oublié ?
+                            </a>
+                        </div>
+                        
+                        <button type="submit" class="auth-submit-btn">
+                            <i class="fas fa-sign-in-alt"></i> Se connecter
+                            <span class="loading-spinner" style="display: none;"></span>
+                        </button>
+                    </form>
+                    
+                    <!-- Séparateur -->
+                    <div class="auth-separator">
+                        <span>Ou continuer avec</span>
+                    </div>
+                    
+                    <!-- Connexion Google -->
+                    <button id="googleLoginBtn" class="social-auth-btn google-btn">
+                        <i class="fab fa-google"></i> Google
+                    </button>
+                    
+                    <!-- Lien inscription -->
+                    <div class="auth-switch">
+                        <p>Pas de compte ? <a href="#" class="switch-link" data-tab="signup">S'inscrire</a></p>
+                    </div>
+                </div>
+
+                <!-- ONGLET INSCRIPTION -->
+                <div id="signupTab" class="auth-tab-content">
+                    <h2><i class="fas fa-user-plus"></i> Créer un compte</h2>
+                    <p class="auth-subtitle">Rejoignez la communauté mathX_searcher</p>
+                    
+                    <!-- Formulaire inscription -->
+                    <form id="signupForm" class="auth-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="signupFirstName">
+                                    <i class="fas fa-user"></i> Prénom
+                                </label>
+                                <input type="text" id="signupFirstName" required 
+                                       placeholder="Votre prénom"
+                                       autocomplete="given-name">
+                                <div class="form-error" id="signupFirstNameError"></div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="signupLastName">
+                                    <i class="fas fa-user"></i> Nom
+                                </label>
+                                <input type="text" id="signupLastName" required 
+                                       placeholder="Votre nom"
+                                       autocomplete="family-name">
+                                <div class="form-error" id="signupLastNameError"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="signupLevel">
+                                <i class="fas fa-graduation-cap"></i> Niveau scolaire
+                            </label>
+                            <input type="text" id="signupLevel" required 
+                                   placeholder="Ex: Terminale, Licence 2, Master..."
+                                   autocomplete="off">
+                            <div class="form-hint">
+                                <i class="fas fa-info-circle"></i>
+                                Indiquez votre niveau d'études actuel
+                            </div>
+                            <div class="form-error" id="signupLevelError"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="signupEmail">
+                                <i class="fas fa-envelope"></i> Adresse email
+                            </label>
+                            <input type="email" id="signupEmail" required 
+                                   placeholder="votre@email.com"
+                                   autocomplete="email">
+                            <div class="form-error" id="signupEmailError"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="signupPassword">
+                                <i class="fas fa-lock"></i> Mot de passe
+                            </label>
+                            <div class="password-input">
+                                <input type="password" id="signupPassword" required 
+                                       placeholder="Créez un mot de passe"
+                                       autocomplete="new-password">
+                                <button type="button" class="toggle-password" data-target="signupPassword">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <div class="password-strength">
+                                <div class="strength-bar"></div>
+                                <span class="strength-text">Force: <span id="passwordStrength">Faible</span></span>
+                            </div>
+                            <div class="form-hint">
+                                <i class="fas fa-shield-alt"></i>
+                                Minimum 6 caractères
+                            </div>
+                            <div class="form-error" id="signupPasswordError"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="signupConfirmPassword">
+                                <i class="fas fa-lock"></i> Confirmer le mot de passe
+                            </label>
+                            <div class="password-input">
+                                <input type="password" id="signupConfirmPassword" required 
+                                       placeholder="Retapez votre mot de passe"
+                                       autocomplete="new-password">
+                                <button type="button" class="toggle-password" data-target="signupConfirmPassword">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <div class="form-error" id="signupConfirmPasswordError"></div>
+                        </div>
+                        
+                        <div class="form-options">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="acceptTerms" required>
+                                <span>J'accepte les <a href="#" class="terms-link">Conditions d'utilisation</a> et la <a href="#" class="terms-link">Politique de confidentialité</a></span>
+                            </label>
+                            <div class="form-error" id="acceptTermsError"></div>
+                        </div>
+                        
+                        <button type="submit" class="auth-submit-btn">
+                            <i class="fas fa-user-plus"></i> Créer mon compte
+                            <span class="loading-spinner" style="display: none;"></span>
+                        </button>
+                    </form>
+                    
+                    <!-- Séparateur -->
+                    <div class="auth-separator">
+                        <span>Ou s'inscrire avec</span>
+                    </div>
+                    
+                    <!-- Inscription Google -->
+                    <button id="googleSignupBtn" class="social-auth-btn google-btn">
+                        <i class="fab fa-google"></i> Google
+                    </button>
+                    
+                    <!-- Lien connexion -->
+                    <div class="auth-switch">
+                        <p>Déjà un compte ? <a href="#" class="switch-link" data-tab="login">Se connecter</a></p>
+                    </div>
+                </div>
+
+                <!-- ONGLET MOT DE PASSE OUBLIÉ -->
+                <div id="resetTab" class="auth-tab-content">
+                    <h2><i class="fas fa-key"></i> Réinitialisation</h2>
+                    <p class="auth-subtitle">Recevez un lien pour réinitialiser votre mot de passe</p>
+                    
+                    <!-- Formulaire réinitialisation -->
+                    <form id="resetForm" class="auth-form">
+                        <div class="form-group">
+                            <label for="resetEmail">
+                                <i class="fas fa-envelope"></i> Adresse email
+                            </label>
+                            <input type="email" id="resetEmail" required 
+                                   placeholder="votre@email.com"
+                                   autocomplete="email">
+                            <div class="form-hint">
+                                <i class="fas fa-info-circle"></i>
+                                Entrez l'email associé à votre compte
+                            </div>
+                            <div class="form-error" id="resetEmailError"></div>
+                        </div>
+                        
+                        <button type="submit" class="auth-submit-btn">
+                            <i class="fas fa-paper-plane"></i> Envoyer le lien
+                            <span class="loading-spinner" style="display: none;"></span>
+                        </button>
+                    </form>
+                    
+                    <!-- Retour connexion -->
+                    <div class="auth-switch">
+                        <a href="#" class="back-link" data-tab="login">
+                            <i class="fas fa-arrow-left"></i> Retour à la connexion
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer de la carte -->
+            <div class="auth-footer">
+                <p>En utilisant ce service, vous acceptez nos conditions.</p>
+                <p class="auth-security">
+                    <i class="fas fa-shield-alt"></i>
+                    Vos données sont sécurisées avec Firebase
+                </p>
+            </div>
+        </div>
+
+        <!-- Infos supplémentaires -->
+        <div class="auth-info">
+            <div class="info-card">
+                <i class="fas fa-star"></i>
+                <h3>Accédez à plus de contenu</h3>
+                <p>Exercices exclusifs, historique sauvegardé, favoris synchronisés</p>
+            </div>
+            
+            <div class="info-card">
+                <i class="fas fa-sync-alt"></i>
+                <h3>Synchronisation multi-appareils</h3>
+                <p>Accédez à vos données depuis n'importe quel appareil</p>
+            </div>
+            
+            <div class="info-card">
+                <i class="fas fa-chart-line"></i>
+                <h3>Suivez vos progrès</h3>
+                <p>Statistiques personnelles et recommandations adaptées</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal de succès (pour inscription) -->
+    <div id="successModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-icon success">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h3>Compte créé avec succès !</h3>
+            <p id="successMessage">Votre compte a été créé. Vous allez être redirigé vers votre profil.</p>
+            <div class="modal-actions">
+                <button id="goToProfileBtn" class="modal-btn primary">
+                    <i class="fas fa-user"></i> Aller au profil
+                </button>
+                <button id="continueBtn" class="modal-btn secondary">
+                    Continuer
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script de redirection si déjà connecté -->
+    <script>
+        // Vérifier si déjà connecté
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                if (typeof firebase !== 'undefined' && firebase.auth) {
+                    firebase.auth().onAuthStateChanged(function(user) {
+                        if (user) {
+                            console.log('✅ Déjà connecté, redirection vers profil...');
+                            window.location.href = 'profil.html';
+                        }
+                    });
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
