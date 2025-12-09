@@ -1,5 +1,5 @@
 /**
- * profil.css - Style refait avec sidebar fonctionnelle
+ * profil.css - Version sans sidebar
  */
 
 :root {
@@ -15,7 +15,6 @@ body.profile-page {
     min-height: 100vh;
     margin: 0;
     padding: 0;
-    position: relative;
 }
 
 /* ================= HEADER ================= */
@@ -76,136 +75,26 @@ body.profile-page {
     flex-shrink: 0;
 }
 
-.hamburger-btn {
-    width: 52px;
-    height: 52px;
-    border: none;
-    background: linear-gradient(135deg, var(--primary-blue), #2563eb);
-    color: white;
-    font-size: 1.4rem;
-    cursor: pointer;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
-    transition: all 0.3s ease;
+/* Bouton Accueil */
+.home-btn {
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: 10px;
+    padding: 12px 20px;
+    background: linear-gradient(135deg, var(--primary-blue), #2563eb);
+    color: white;
+    text-decoration: none;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 1rem;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+    transition: all 0.3s ease;
 }
 
-.hamburger-btn:hover {
+.home-btn:hover {
     transform: translateY(-2px) scale(1.05);
     box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
     background: linear-gradient(135deg, #2563eb, #1d4ed8);
-}
-
-/* ================= SIDEBAR REFAIT - FONCTIONNEL ================= */
-
-/* Overlay sombre */
-.sidebar-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 1998;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease;
-}
-
-.sidebar-overlay.active {
-    opacity: 1;
-    visibility: visible;
-}
-
-/* Sidebar */
-.profile-sidebar {
-    position: fixed;
-    top: 0;
-    right: -300px; /* Complètement hors écran à droite */
-    width: 280px;
-    height: 100%;
-    background: var(--white);
-    z-index: 1999;
-    transition: right 0.3s ease;
-    box-shadow: -5px 0 20px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-}
-
-/* Quand la sidebar est ouverte */
-.profile-sidebar.active {
-    right: 0; /* Ramenée à sa position */
-}
-
-.sidebar-header {
-    padding: 1.2rem;
-    display: flex;
-    justify-content: flex-end;
-    border-bottom: 1px solid var(--border-color);
-}
-
-.sidebar-close {
-    width: 40px;
-    height: 40px;
-    border: none;
-    background: var(--light-gray);
-    color: #64748b;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1.1rem;
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.sidebar-close:hover {
-    background: #ef4444;
-    color: white;
-    transform: rotate(90deg);
-}
-
-.sidebar-nav {
-    padding: 1.5rem;
-    flex: 1;
-}
-
-.nav-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-.nav-link {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 0.9rem 1rem;
-    color: #334155;
-    text-decoration: none;
-    border-radius: 8px;
-    margin-bottom: 0.5rem;
-    transition: all 0.2s ease;
-    font-weight: 500;
-}
-
-.nav-link:hover {
-    background: rgba(59, 130, 246, 0.1);
-    transform: translateX(5px);
-}
-
-.nav-link.active {
-    background: var(--primary-blue);
-    color: var(--white);
-    font-weight: 600;
-}
-
-.nav-link i {
-    width: 22px;
-    text-align: center;
-    font-size: 1.1rem;
 }
 
 /* ================= CONTENU PRINCIPAL ================= */
@@ -357,6 +246,227 @@ body.profile-page {
     word-break: break-word;
 }
 
+/* ================= NOUVELLE SECTION PARAMÈTRES ================= */
+.settings-section {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    width: 100%;
+    margin: 1.5rem 0;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(59, 130, 246, 0.15);
+    box-sizing: border-box;
+}
+
+.settings-group {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.settings-group:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.settings-title {
+    font-size: 1.2rem;
+    color: #1e293b;
+    font-weight: 600;
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.settings-title i {
+    color: var(--primary-blue);
+}
+
+/* Thème toggle */
+.theme-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.theme-label {
+    font-size: 0.95rem;
+    color: #64748b;
+    font-weight: 500;
+}
+
+/* Switch toggle */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 30px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #cbd5e1;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: var(--primary-blue);
+}
+
+input:checked + .slider:before {
+    transform: translateX(30px);
+}
+
+/* Filtres par défaut */
+.default-filters {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.filter-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 15px;
+    background: #f8fafc;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.filter-option:hover {
+    background: #e2e8f0;
+    transform: translateX(5px);
+}
+
+.filter-checkbox {
+    width: 22px;
+    height: 22px;
+    border: 2px solid #cbd5e1;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.filter-option input:checked + .filter-checkbox {
+    background: var(--primary-blue);
+    border-color: var(--primary-blue);
+}
+
+.filter-option input:checked + .filter-checkbox:after {
+    content: "✓";
+    color: white;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.filter-text {
+    font-size: 1rem;
+    color: #334155;
+    font-weight: 500;
+}
+
+/* Boutons de partage */
+.share-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.share-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex: 1;
+    max-width: 150px;
+    justify-content: center;
+}
+
+.whatsapp-btn {
+    background: linear-gradient(135deg, #25D366, #128C7E);
+    color: white;
+}
+
+.whatsapp-btn:hover {
+    background: linear-gradient(135deg, #128C7E, #075E54);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(37, 211, 102, 0.3);
+}
+
+.facebook-btn {
+    background: linear-gradient(135deg, #1877F2, #0D5BB5);
+    color: white;
+}
+
+.facebook-btn:hover {
+    background: linear-gradient(135deg, #0D5BB5, #09488D);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(24, 119, 242, 0.3);
+}
+
+/* Version info */
+.version-info {
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 1.2rem;
+    border: 1px solid #e2e8f0;
+}
+
+.version-text, .version-date {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0.5rem 0;
+    font-size: 0.95rem;
+    color: #475569;
+}
+
+.version-text i, .version-date i {
+    color: var(--primary-blue);
+}
+
+.version-text span, .version-date span {
+    font-weight: 600;
+    color: #1e293b;
+}
+
 /* ================= BOUTON DÉCONNEXION ================= */
 .logout-btn {
     width: 100%;
@@ -389,7 +499,7 @@ body.profile-page {
         padding: 1rem;
     }
     
-    .profile-card {
+    .profile-card, .settings-section {
         padding: 1.5rem;
         border-radius: 16px;
     }
@@ -411,19 +521,32 @@ body.profile-page {
     .info-content, .email-content {
         font-size: 1rem;
     }
+    
+    .share-buttons {
+        flex-direction: column;
+    }
+    
+    .share-btn {
+        max-width: 100%;
+    }
 }
 
 @media (max-width: 480px) {
-    .profile-sidebar {
-        width: 85%;
-        right: -85%;
+    .header-container {
+        padding: 0 1rem;
     }
     
-    .profile-sidebar.active {
-        right: 0;
+    .home-btn span {
+        display: none;
     }
     
-    .profile-card {
+    .home-btn {
+        padding: 12px;
+        width: 52px;
+        justify-content: center;
+    }
+    
+    .profile-card, .settings-section {
         padding: 1.2rem;
     }
     

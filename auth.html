@@ -32,6 +32,7 @@
                 <div class="logo">
                     <i class="fas fa-square-root-alt"></i>
                     <span>mathX</span>
+                    <a href="index.html">retour à l'accueil</a>
                 </div>
             </a>
             
@@ -334,5 +335,18 @@
             }, 1000);
         });
     </script>
+    <script>
+// Quand l'utilisateur se connecte avec succès
+function onLoginSuccess(user) {
+    // Marquer première connexion
+    localStorage.setItem('mathx_first_connection', 'true');
+    localStorage.removeItem('mathx_manual_logout');
+    
+    // Rediriger vers profil
+    setTimeout(() => {
+        window.location.href = 'profil.html';
+    }, 1500);
+}
+</script>
 </body>
 </html>

@@ -246,14 +246,15 @@ body {
     position: fixed;
     top: 0;
     right: -350px;
-    width: 320px;
-    height: 100%;
+    width: 2px;
+    height: 40%;
     background-color: white;
     z-index: 1000;
     box-shadow: -5px 0 30px rgba(0, 0, 0, 0.12);
     transition: right 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     display: flex;
     flex-direction: column;
+    
 }
 
 .sidebar.active {
@@ -912,4 +913,207 @@ body {
         from { opacity: 0; }
         to { opacity: 1; }
     }
+}
+/* Styles pour les nouveaux états et fonctionnalités */
+.auth-status,
+.preload-dot,
+.global-loader,
+.global-error {
+    /* Styles pour les messages d'état */
+}
+
+/* Animation pour le point préchargé */
+@keyframes pulse {
+    0% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(1.1); }
+    100% { opacity: 1; transform: scale(1); }
+}
+/* ================= THÈME DARK GLOBAL ================= */
+
+/* Appliquer à TOUTES les pages quand data-theme="dark" */
+[data-theme="dark"] {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important;
+    color: #f1f5f9 !important;
+}
+
+[data-theme="dark"] .header {
+    background: rgba(30, 41, 59, 0.95) !important;
+    backdrop-filter: blur(10px) !important;
+    border-bottom: 1px solid #475569 !important;
+}
+
+[data-theme="dark"] .logo-square {
+    background: rgba(59, 130, 246, 0.2) !important;
+}
+
+[data-theme="dark"] .search-input {
+    background: #334155 !important;
+    color: #f1f5f9 !important;
+    border-color: #475569 !important;
+}
+
+[data-theme="dark"] .search-input::placeholder {
+    color: #94a3b8 !important;
+}
+
+[data-theme="dark"] .filters-bar {
+    background: rgba(30, 41, 59, 0.9) !important;
+    border-color: #475569 !important;
+}
+
+[data-theme="dark"] .filter-checkbox {
+    background: #475569 !important;
+}
+
+[data-theme="dark"] .filter-text {
+    color: #cbd5e1 !important;
+}
+
+[data-theme="dark"] .main-content {
+    background: transparent !important;
+}
+
+[data-theme="dark"] .welcome-state,
+[data-theme="dark"] .results-container {
+    background: #334155 !important;
+    color: #f1f5f9 !important;
+    border-color: #475569 !important;
+}
+
+[data-theme="dark"] .welcome-subtitle {
+    color: #94a3b8 !important;
+}
+
+[data-theme="dark"] .tip {
+    background: rgba(255, 255, 255, 0.05) !important;
+    color: #cbd5e1 !important;
+}
+
+[data-theme="dark"] .result-card {
+    background: #475569 !important;
+    border-color: #64748b !important;
+    color: #f1f5f9 !important;
+}
+
+[data-theme="dark"] .result-category {
+    background: rgba(59, 130, 246, 0.3) !important;
+    color: #60a5fa !important;
+}
+
+[data-theme="dark"] .bottom-nav {
+    background: rgba(30, 41, 59, 0.95) !important;
+    border-color: #475569 !important;
+}
+
+[data-theme="dark"] .nav-tab {
+    color: #cbd5e1 !important;
+}
+
+[data-theme="dark"] .nav-tab.active {
+    background: rgba(59, 130, 246, 0.2) !important;
+    color: #3b82f6 !important;
+}
+
+[data-theme="dark"] .sidebar {
+    background: #1e293b !important;
+    color: #f1f5f9 !important;
+}
+
+[data-theme="dark"] .sidebar-link {
+    color: #cbd5e1 !important;
+}
+
+[data-theme="dark"] .sidebar-link:hover {
+    background: rgba(59, 130, 246, 0.2) !important;
+}
+
+[data-theme="dark"] .sidebar-info {
+    background: rgba(255, 255, 255, 0.05) !important;
+}
+
+[data-theme="dark"] .overlay {
+    background: rgba(0, 0, 0, 0.7) !important;
+}
+
+/* Pour les pages de profil */
+[data-theme="dark"] .profile-card,
+[data-theme="dark"] .settings-section {
+    background: #334155 !important;
+    color: #f1f5f9 !important;
+    border-color: #475569 !important;
+}
+
+[data-theme="dark"] .info-item,
+[data-theme="dark"] .version-info {
+    background: #475569 !important;
+    border-color: #64748b !important;
+}
+
+[data-theme="dark"] .email-section {
+    background: rgba(59, 130, 246, 0.2) !important;
+    border-color: rgba(59, 130, 246, 0.3) !important;
+}
+
+[data-theme="dark"] .theme-label {
+    color: #cbd5e1 !important;
+}
+
+[data-theme="dark"] .settings-title {
+    color: #f1f5f9 !important;
+}
+
+[data-theme="dark"] .filter-text {
+    color: #e2e8f0 !important;
+}
+
+[data-theme="dark"] .version-text,
+[data-theme="dark"] .version-date {
+    color: #cbd5e1 !important;
+}
+
+[data-theme="dark"] .version-text span,
+[data-theme="dark"] .version-date span {
+    color: #f1f5f9 !important;
+}
+
+/* Pour les boutons de partage */
+[data-theme="dark"] .share-btn {
+    opacity: 0.9 !important;
+}
+
+[data-theme="dark"] .share-btn:hover {
+    opacity: 1 !important;
+    transform: translateY(-2px) !important;
+}
+
+/* Pour les pages d'authentification */
+[data-theme="dark"] .auth-card {
+    background: #334155 !important;
+    color: #f1f5f9 !important;
+    border-color: #475569 !important;
+}
+
+[data-theme="dark"] .auth-tab {
+    color: #94a3b8 !important;
+}
+
+[data-theme="dark"] .auth-tab.active {
+    color: #3b82f6 !important;
+    background: rgba(59, 130, 246, 0.1) !important;
+}
+
+[data-theme="dark"] input {
+    background: #475569 !important;
+    color: #f1f5f9 !important;
+    border-color: #64748b !important;
+}
+
+[data-theme="dark"] input::placeholder {
+    color: #94a3b8 !important;
+}
+
+[data-theme="dark"] .social-auth-btn {
+    background: #475569 !important;
+    color: #f1f5f9 !important;
+    border-color: #64748b !important;
 }

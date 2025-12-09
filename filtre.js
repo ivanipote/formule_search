@@ -457,3 +457,68 @@ if (document.readyState === 'loading') {
 } else {
     initialiserFiltres();
 }
+// Dans filtre.js
+function chargerFiltresParDefaut() {
+    console.log('🔧 Chargement des filtres par défaut...');
+    
+    // Récupérer les filtres sauvegardés
+    const savedFilters = JSON.parse(localStorage.getItem('mathx_default_filters') || '{"math":true,"physique":true,"professionnel":true}');
+    
+    // Appliquer aux checkboxes
+    document.querySelectorAll('.filter-input').forEach(input => {
+        const filterName = input.closest('.filter-checkbox').dataset.filter;
+        if (savedFilters.hasOwnProperty(filterName)) {
+            const wasChecked = input.checked;
+            input.checked = savedFilters[filterName];
+            
+            // Déclencher l'événement change si la valeur a changé
+            if (wasChecked !== input.checked) {
+                input.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+        }
+    });
+    
+    console.log('✅ Filtres appliqués:', savedFilters);
+    return savedFilters;
+}
+
+// Sauvegarder quand les filtres changent
+function sauvegarderFiltres() {
+    const filters = {};
+    document.querySelectorAll('.filter-input').forEach(input => {
+        const filterName = input.closest('.filter-checkbox').dataset.filter;
+        if (filterName) {
+            filters[filterName] = input.checked;
+        }
+    });
+    
+    localStorage.setItem('mathx_default_filters', JSON.stringify(filters));
+    console.log('💾 Filtres sauvegardés:', filters);
+}
+
+// Appeler au chargement de la page
+document.addEventListener('DOMContentLoaded', function() {
+    // 1. Charger les filtres sauvegardés
+    chargerFiltresParDefaut();
+    
+    // 2. Sauvegarder quand l'utilisateur change les filtres
+    document.querySelectorAll('.filter-input').forEach(input => {
+        input.addEventListener('change', sauvegarderFiltres);
+    });
+    
+    // 3. Écouter les changements depuis d'autres pages
+    window.addEventListener('storage', (e) => {
+        if (e.key === 'mathx_default_filters') {
+            console.log('🔄 Changement de filtres détecté');
+            chargerFiltresParDefaut();
+            
+            // Re-lancer la recherche si nécessaire
+            if (window.RechercheEngine && window.RechercheEngine.rechercher) {
+                const searchTerm = document.getElementById('mainSearchInput')?.value;
+                if (searchTerm && searchTerm.trim()) {
+                    window.RechercheEngine.rechercher(searchTerm);
+                }
+            }
+        }
+    });
+});
