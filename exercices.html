@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MathX Searcher - Mathematics Exercises and Solutions">
+    <meta name="keywords" content="mathematics, exercises, solver, learning">
+    <meta name="author" content="MathX Team">
+    <title>Exercises - MathX Searcher</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/exercices.css">
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
+        <div class="container">
+            <div class="navbar-brand">
+                <a href="index.html" class="logo">
+                    <span class="logo-icon">∑</span>
+                    <span class="logo-text">MathX Searcher</span>
+                </a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="exercices.html" class="active">Exercises</a></li>
+                <li><a href="solver.html">Solver</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section class="hero" aria-label="Page introduction">
+            <div class="container">
+                <h1>Mathematics Exercises</h1>
+                <p>Explore a comprehensive collection of exercises organized by difficulty and topic</p>
+            </div>
+        </section>
+
+        <!-- Search and Filter Section -->
+        <section class="controls-section" aria-label="Search and filter controls">
+            <div class="container">
+                <div class="search-box">
+                    <input 
+                        type="text" 
+                        id="searchInput" 
+                        class="search-input" 
+                        placeholder="Search exercises by keyword..."
+                        aria-label="Search exercises">
+                    <button class="search-btn" aria-label="Submit search">
+                        <span>🔍</span>
+                    </button>
+                </div>
+
+                <div class="filters">
+                    <div class="filter-group">
+                        <label for="categoryFilter">Category:</label>
+                        <select id="categoryFilter" class="filter-select" aria-label="Filter by category">
+                            <option value="">All Categories</option>
+                            <option value="algebra">Algebra</option>
+                            <option value="geometry">Geometry</option>
+                            <option value="trigonometry">Trigonometry</option>
+                            <option value="calculus">Calculus</option>
+                            <option value="statistics">Statistics</option>
+                            <option value="probability">Probability</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="difficultyFilter">Difficulty:</label>
+                        <select id="difficultyFilter" class="filter-select" aria-label="Filter by difficulty">
+                            <option value="">All Levels</option>
+                            <option value="beginner">Beginner</option>
+                            <option value="intermediate">Intermediate</option>
+                            <option value="advanced">Advanced</option>
+                        </select>
+                    </div>
+
+                    <button class="filter-reset" id="resetFilters" aria-label="Reset filters">Reset</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Results Info -->
+        <section class="results-info">
+            <div class="container">
+                <p>Showing <span id="exerciseCount">0</span> exercises</p>
+            </div>
+        </section>
+
+        <!-- Exercises Grid -->
+        <section class="exercises-section" aria-label="Exercises list">
+            <div class="container">
+                <div class="exercises-grid" id="exercisesGrid">
+                    <!-- Exercise cards will be inserted here dynamically -->
+                    
+                    <!-- Sample Exercise Card Template -->
+                    <article class="exercise-card" data-category="algebra" data-difficulty="beginner">
+                        <div class="exercise-header">
+                            <span class="difficulty-badge difficulty-beginner">Beginner</span>
+                            <span class="category-badge">Algebra</span>
+                        </div>
+                        <div class="exercise-content">
+                            <h3>Linear Equations</h3>
+                            <p>Solve for x: 2x + 5 = 13</p>
+                            <div class="exercise-meta">
+                                <span class="exercise-id">#EX001</span>
+                                <span class="exercise-rating">⭐ 4.5/5</span>
+                            </div>
+                        </div>
+                        <div class="exercise-footer">
+                            <button class="btn-primary" aria-label="Attempt exercise">Attempt</button>
+                            <button class="btn-secondary" aria-label="View solution">Solution</button>
+                        </div>
+                    </article>
+
+                    <article class="exercise-card" data-category="geometry" data-difficulty="intermediate">
+                        <div class="exercise-header">
+                            <span class="difficulty-badge difficulty-intermediate">Intermediate</span>
+                            <span class="category-badge">Geometry</span>
+                        </div>
+                        <div class="exercise-content">
+                            <h3>Triangle Properties</h3>
+                            <p>Find the area of a triangle with sides 5, 6, and 7 cm</p>
+                            <div class="exercise-meta">
+                                <span class="exercise-id">#EX002</span>
+                                <span class="exercise-rating">⭐ 4.8/5</span>
+                            </div>
+                        </div>
+                        <div class="exercise-footer">
+                            <button class="btn-primary" aria-label="Attempt exercise">Attempt</button>
+                            <button class="btn-secondary" aria-label="View solution">Solution</button>
+                        </div>
+                    </article>
+
+                    <article class="exercise-card" data-category="calculus" data-difficulty="advanced">
+                        <div class="exercise-header">
+                            <span class="difficulty-badge difficulty-advanced">Advanced</span>
+                            <span class="category-badge">Calculus</span>
+                        </div>
+                        <div class="exercise-content">
+                            <h3>Derivative Applications</h3>
+                            <p>Find the maximum of f(x) = -x² + 4x + 1</p>
+                            <div class="exercise-meta">
+                                <span class="exercise-id">#EX003</span>
+                                <span class="exercise-rating">⭐ 4.3/5</span>
+                            </div>
+                        </div>
+                        <div class="exercise-footer">
+                            <button class="btn-primary" aria-label="Attempt exercise">Attempt</button>
+                            <button class="btn-secondary" aria-label="View solution">Solution</button>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- Empty State -->
+                <div id="emptyState" class="empty-state" hidden>
+                    <div class="empty-state-icon">📚</div>
+                    <h3>No exercises found</h3>
+                    <p>Try adjusting your search or filters to find more exercises</p>
+                    <button class="btn-primary" id="clearFiltersBtn">Clear Filters</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pagination -->
+        <section class="pagination-section" aria-label="Pagination">
+            <div class="container">
+                <nav class="pagination" role="navigation" aria-label="Pagination navigation">
+                    <button class="pagination-btn" id="prevBtn" aria-label="Previous page" disabled>
+                        ← Previous
+                    </button>
+                    <ul class="pagination-numbers" id="paginationNumbers">
+                        <li><button class="page-number active" data-page="1">1</button></li>
+                        <li><button class="page-number" data-page="2">2</button></li>
+                        <li><button class="page-number" data-page="3">3</button></li>
+                    </ul>
+                    <button class="pagination-btn" id="nextBtn" aria-label="Next page">
+                        Next →
+                    </button>
+                </nav>
+            </div>
+        </section>
+
+        <!-- Statistics Section -->
+        <section class="stats-section" aria-label="Exercise statistics">
+            <div class="container">
+                <h2>Your Progress</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Total Exercises</h3>
+                        <p class="stat-number">156</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Completed</h3>
+                        <p class="stat-number">42</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Correct Answers</h3>
+                        <p class="stat-number">38</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Success Rate</h3>
+                        <p class="stat-number">90%</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta-section">
+            <div class="container">
+                <h2>Ready to improve your math skills?</h2>
+                <p>Start solving exercises and track your progress with detailed analytics</p>
+                <button class="btn-primary btn-large" aria-label="Start solving exercises">
+                    Start Solving Now
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer" role="contentinfo">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>About MathX</h4>
+                    <p>Advanced mathematics learning platform with interactive exercises and solutions.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="exercices.html">Exercises</a></li>
+                        <li><a href="solver.html">Solver</a></li>
+                        <li><a href="privacy.html">Privacy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li><a href="mailto:info@mathx.com">info@mathx.com</a></li>
+                        <li><a href="tel:+1234567890">+1 (234) 567-890</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook">f</a>
+                        <a href="#" aria-label="Twitter">𝕏</a>
+                        <a href="#" aria-label="LinkedIn">in</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 MathX Searcher. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/main.js" defer></script>
+    <script src="js/exercices.js" defer></script>
+</body>
+</html>
