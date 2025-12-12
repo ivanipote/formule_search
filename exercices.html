@@ -1,275 +1,506 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="MathX Searcher - Mathematics Exercises and Solutions">
-    <meta name="keywords" content="mathematics, exercises, solver, learning">
-    <meta name="author" content="MathX Team">
-    <title>Exercises - MathX Searcher</title>
-    <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet" href="styles/exercices.css">
-    <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <title>Exercices - mathX_searcher</title>
+    
+    <!-- CSS indépendant -->
+    <link rel="stylesheet" href="exercices.css">
+    
+    <!-- Font Awesome pour icônes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Styles spécifiques pour les ajustements -->
+    <style>
+        /* ================= CORRECTIONS SPÉCIFIQUES ================= */
+        
+        /* Barre navigation fixe */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+        
+        /* Conteneur principal avec padding pour navigation fixe */
+        main {
+            padding-bottom: 100px; /* Espace pour navigation */
+            min-height: calc(100vh - 180px);
+        }
+        
+        /* Titres avec retour à ligne */
+        .file-title {
+            white-space: normal; /* Retour à ligne */
+            word-break: break-word; /* Casse les mots longs */
+            overflow-wrap: break-word;
+            max-height: 3.6em; /* ≈ 3 lignes max */
+            overflow: hidden;
+            line-height: 1.2;
+        }
+        
+        /* Prévisualisation TXT avec scroll double */
+        .exercise-preview {
+            max-height: 120px;
+            overflow: auto; /* Scroll vertical ET horizontal */
+            white-space: pre-wrap; /* Conserve les sauts de ligne */
+            word-wrap: break-word;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 0.9rem;
+            padding: 12px;
+            background: rgba(16, 185, 129, 0.05); /* VERT au lieu de bleu */
+            border-radius: 8px;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            
+            /* Style scrollbar */
+            scrollbar-width: thin;
+            scrollbar-color: #10b981 rgba(16, 185, 129, 0.1);
+        }
+        
+        .exercise-preview::-webkit-scrollbar {
+            width: 8px;
+            height: 8px; /* Pour scroll horizontal */
+        }
+        
+        .exercise-preview::-webkit-scrollbar-track {
+            background: rgba(16, 185, 129, 0.1);
+            border-radius: 4px;
+        }
+        
+        .exercise-preview::-webkit-scrollbar-thumb {
+            background: #10b981;
+            border-radius: 4px;
+        }
+        
+        .exercise-preview::-webkit-scrollbar-thumb:hover {
+            background: #059669;
+        }
+        
+        /* Description PDF avec retour à ligne */
+        .file-description {
+            white-space: normal;
+            word-break: break-word;
+            overflow-wrap: break-word;
+            line-height: 1.5;
+        }
+        
+        /* Image container adaptatif */
+        .image-container {
+            max-width: 100%;
+            overflow: hidden;
+            border-radius: 8px;
+            background: rgba(16, 185, 129, 0.05); /* VERT */
+            padding: 10px;
+        }
+        
+        .image-preview {
+            max-width: 100%;
+            max-height: 200px;
+            object-fit: contain;
+            display: block;
+            margin: 0 auto;
+        }
+        
+        /* Carte invisible par défaut */
+        .result-card {
+            display: none; /* Cachée par défaut */
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        
+        .result-card.visible {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* État d'accueil (visible par défaut) */
+        .welcome-state {
+            display: block;
+            text-align: center;
+            padding: 60px 20px;
+            max-width: 800px;
+            margin: 40px auto 0;
+        }
+        
+        .welcome-state.hidden {
+            display: none;
+        }
+        
+        /* Indicateur de scroll pour cartes longues */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            background: rgba(16, 185, 129, 0.8);
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+            z-index: 2;
+        }
+        
+        .scroll-indicator:hover {
+            opacity: 1;
+        }
+        
+        /* Message quand pas de recherche */
+        .no-search-message {
+            text-align: center;
+            padding: 60px 20px;
+            color: #64748b;
+            font-size: 1.1rem;
+        }
+        
+        [data-theme="dark"] .no-search-message {
+            color: #94a3b8;
+        }
+        
+        /* Bouton pour scanner les nouveaux fichiers */
+        .scan-new-files {
+            background: linear-gradient(135deg, #10b981, #059669); /* VERT */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 20px auto;
+            transition: all 0.3s ease;
+        }
+        
+        .scan-new-files:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);
+        }
+        
+        /* ================= FILTRES CHECKBOX VERT ================= */
+        .filter-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            padding: 6px 12px;
+            border-radius: 6px;
+            background: var(--white);
+            border: 2px solid #e2e8f0;
+            transition: all 0.2s ease;
+            font-size: 0.85rem;
+        }
+        
+        [data-theme="dark"] .filter-checkbox {
+            background: #475569;
+            border-color: #64748b;
+        }
+        
+        /* Quand sélectionné : BORDURE VERTE */
+        .filter-checkbox.active {
+            border-color: #10b981;
+            background: rgba(16, 185, 129, 0.1);
+        }
+        
+        .filter-checkbox.active .filter-text {
+            color: #10b981;
+            font-weight: 700;
+        }
+        
+        .filter-checkbox:hover {
+            background: rgba(16, 185, 129, 0.05);
+            border-color: #10b981;
+        }
+        
+        .filter-input {
+            display: none;
+        }
+        
+        .filter-text {
+            font-weight: 600;
+            color: #64748b;
+        }
+        
+        [data-theme="dark"] .filter-text {
+            color: #cbd5e1;
+        }
+        
+        /* Checkmark vert pour l'option sélectionnée */
+        .filter-checkbox.active::before {
+            content: "✓";
+            color: #10b981;
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-right: 5px;
+        }
+        
+        /* ================= GESTION DU THÈME GLOBAL ================= */
+        .theme-sync {
+            display: none; /* Caché mais présent pour la synchro */
+        }
+        
+        /* ================= RESPONSIVE ================= */
+        @media (max-width: 768px) {
+            main {
+                padding-bottom: 90px;
+            }
+            
+            .file-title {
+                font-size: 1.1rem;
+                max-height: 3.3em;
+            }
+            
+            .exercise-preview {
+                max-height: 100px;
+                font-size: 0.85rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .file-title {
+                font-size: 1rem;
+                max-height: 3em;
+            }
+            
+            .exercise-preview {
+                max-height: 90px;
+                font-size: 0.8rem;
+            }
+            
+            .image-preview {
+                max-height: 150px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar" role="navigation" aria-label="Main navigation">
-        <div class="container">
-            <div class="navbar-brand">
-                <a href="index.html" class="logo">
-                    <span class="logo-icon">∑</span>
-                    <span class="logo-text">MathX Searcher</span>
-                </a>
+    <!-- Header compact -->
+    <header class="ex-header">
+        <div class="ex-header-container">
+            <!-- Logo rectangle - redirige vers profil.html -->
+            <a href="profil.html" class="logo-rectangle">
+                <img src="logo.png" alt="mathX_searcher" class="logo-img">
+            </a>
+            
+            <!-- Barre de recherche centrée -->
+            <div class="search-bar">
+                <input type="text" 
+                       class="search-input" 
+                       id="exercicesSearchInput"
+                       placeholder="Rechercher des exercices, cours ou images..."
+                       autocomplete="off">
             </div>
-            <ul class="nav-menu">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="exercices.html" class="active">Exercises</a></li>
-                <li><a href="solver.html">Solver</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="contact.html">Contact</a></li>
-            </ul>
-            <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
-                <span></span>
-                <span></span>
-                <span></span>
+        </div>
+        
+        <!-- Filtres dans le header - CHECKBOX avec activation individuelle -->
+        <div class="header-filters">
+            <div class="filter-options">
+                <label class="filter-checkbox" data-filter="pdf">
+                    <input type="checkbox" class="filter-input" checked data-type="pdf">
+                    <span class="filter-text">PDF</span>
+                </label>
+                
+                <label class="filter-checkbox" data-filter="txt">
+                    <input type="checkbox" class="filter-input" checked data-type="txt">
+                    <span class="filter-text">Exercices</span>
+                </label>
+                
+                <label class="filter-checkbox" data-filter="image">
+                    <input type="checkbox" class="filter-input" checked data-type="image">
+                    <span class="filter-text">Images</span>
+                </label>
+            </div>
+        </div>
+    </header>
+
+    <!-- Contenu principal -->
+    <main>
+        <!-- État d'accueil (visible au début) -->
+        <div class="welcome-state" id="welcomeState">
+            <div class="welcome-icon">
+                <i class="fas fa-brain"></i>
+            </div>
+            <h1>Centre d'Exercices <span class="site-name">mathX</span></h1>
+            <p class="welcome-subtitle">Tapez dans la barre de recherche pour découvrir les exercices</p>
+            <div class="welcome-tips">
+                <div class="tip">
+                    <i class="fas fa-search"></i>
+                    <span>Commencez à taper pour rechercher des exercices</span>
+                </div>
+                <div class="tip">
+                    <i class="fas fa-filter"></i>
+                    <span>Cliquez sur les filtres pour les activer/désactiver</span>
+                </div>
+                <div class="tip">
+                    <i class="fas fa-sync-alt"></i>
+                    <span>Cliquez sur "Scanner" pour voir les nouveaux fichiers</span>
+                </div>
+                <div class="tip">
+                    <i class="fas fa-user-circle"></i>
+                    <span>Cliquez sur le logo pour accéder à votre profil</span>
+                </div>
+            </div>
+            
+            <!-- Bouton pour scanner les nouveaux fichiers -->
+            <button class="scan-new-files" id="scanNewFilesBtn">
+                <i class="fas fa-sync-alt"></i> Scanner les nouveaux fichiers
             </button>
+        </div>
+        
+        <!-- Message quand pas de recherche -->
+        <div class="no-search-message" id="noSearchMessage" style="display: none;">
+            <i class="fas fa-search fa-2x" style="margin-bottom: 15px;"></i>
+            <p>Commencez à taper dans la barre de recherche pour voir les exercices</p>
+        </div>
+
+        <!-- Conteneur pour les résultats (caché au début) -->
+        <div class="results-container" id="resultsContainer" style="display: none;">
+            <!-- Les cartes seront injectées ici dynamiquement -->
+        </div>
+        
+        <!-- État : aucun résultat -->
+        <div class="no-results" id="noResultsState" style="display: none;">
+            <i class="fas fa-search fa-2x" style="margin-bottom: 15px; color: #94a3b8;"></i>
+            <p>Aucun résultat trouvé. Essayez d'autres termes de recherche.</p>
+            <button class="scan-new-files" id="rescanBtn" style="margin-top: 20px;">
+                <i class="fas fa-sync-alt"></i> Re-scanner les fichiers
+            </button>
+        </div>
+        
+        <!-- État : chargement en cours -->
+        <div class="loading-state" id="loadingState" style="display: none;">
+            <div class="spinner"></div>
+            <p>Chargement des exercices...</p>
+        </div>
+    </main>
+
+    <!-- Navigation bas fixe -->
+    <nav class="bottom-nav">
+        <div class="nav-container">
+            <a href="index.html" class="nav-tab">
+                <i class="fas fa-search"></i>
+                <span class="tab-label">Recherche</span>
+            </a>
+            
+            <a href="exercices.html" class="nav-tab active">
+                <i class="fas fa-pen-to-square"></i>
+                <span class="tab-label">Exercices</span>
+            </a>
         </div>
     </nav>
 
-    <!-- Main Content -->
-    <main class="main-content">
-        <!-- Hero Section -->
-        <section class="hero" aria-label="Page introduction">
-            <div class="container">
-                <h1>Mathematics Exercises</h1>
-                <p>Explore a comprehensive collection of exercises organized by difficulty and topic</p>
-            </div>
-        </section>
+    <!-- Élément caché pour la synchronisation du thème -->
+    <div class="theme-sync" id="themeSync"></div>
 
-        <!-- Search and Filter Section -->
-        <section class="controls-section" aria-label="Search and filter controls">
-            <div class="container">
-                <div class="search-box">
-                    <input 
-                        type="text" 
-                        id="searchInput" 
-                        class="search-input" 
-                        placeholder="Search exercises by keyword..."
-                        aria-label="Search exercises">
-                    <button class="search-btn" aria-label="Submit search">
-                        <span>🔍</span>
-                    </button>
-                </div>
-
-                <div class="filters">
-                    <div class="filter-group">
-                        <label for="categoryFilter">Category:</label>
-                        <select id="categoryFilter" class="filter-select" aria-label="Filter by category">
-                            <option value="">All Categories</option>
-                            <option value="algebra">Algebra</option>
-                            <option value="geometry">Geometry</option>
-                            <option value="trigonometry">Trigonometry</option>
-                            <option value="calculus">Calculus</option>
-                            <option value="statistics">Statistics</option>
-                            <option value="probability">Probability</option>
-                        </select>
-                    </div>
-
-                    <div class="filter-group">
-                        <label for="difficultyFilter">Difficulty:</label>
-                        <select id="difficultyFilter" class="filter-select" aria-label="Filter by difficulty">
-                            <option value="">All Levels</option>
-                            <option value="beginner">Beginner</option>
-                            <option value="intermediate">Intermediate</option>
-                            <option value="advanced">Advanced</option>
-                        </select>
-                    </div>
-
-                    <button class="filter-reset" id="resetFilters" aria-label="Reset filters">Reset</button>
-                </div>
-            </div>
-        </section>
-
-        <!-- Results Info -->
-        <section class="results-info">
-            <div class="container">
-                <p>Showing <span id="exerciseCount">0</span> exercises</p>
-            </div>
-        </section>
-
-        <!-- Exercises Grid -->
-        <section class="exercises-section" aria-label="Exercises list">
-            <div class="container">
-                <div class="exercises-grid" id="exercisesGrid">
-                    <!-- Exercise cards will be inserted here dynamically -->
-                    
-                    <!-- Sample Exercise Card Template -->
-                    <article class="exercise-card" data-category="algebra" data-difficulty="beginner">
-                        <div class="exercise-header">
-                            <span class="difficulty-badge difficulty-beginner">Beginner</span>
-                            <span class="category-badge">Algebra</span>
-                        </div>
-                        <div class="exercise-content">
-                            <h3>Linear Equations</h3>
-                            <p>Solve for x: 2x + 5 = 13</p>
-                            <div class="exercise-meta">
-                                <span class="exercise-id">#EX001</span>
-                                <span class="exercise-rating">⭐ 4.5/5</span>
-                            </div>
-                        </div>
-                        <div class="exercise-footer">
-                            <button class="btn-primary" aria-label="Attempt exercise">Attempt</button>
-                            <button class="btn-secondary" aria-label="View solution">Solution</button>
-                        </div>
-                    </article>
-
-                    <article class="exercise-card" data-category="geometry" data-difficulty="intermediate">
-                        <div class="exercise-header">
-                            <span class="difficulty-badge difficulty-intermediate">Intermediate</span>
-                            <span class="category-badge">Geometry</span>
-                        </div>
-                        <div class="exercise-content">
-                            <h3>Triangle Properties</h3>
-                            <p>Find the area of a triangle with sides 5, 6, and 7 cm</p>
-                            <div class="exercise-meta">
-                                <span class="exercise-id">#EX002</span>
-                                <span class="exercise-rating">⭐ 4.8/5</span>
-                            </div>
-                        </div>
-                        <div class="exercise-footer">
-                            <button class="btn-primary" aria-label="Attempt exercise">Attempt</button>
-                            <button class="btn-secondary" aria-label="View solution">Solution</button>
-                        </div>
-                    </article>
-
-                    <article class="exercise-card" data-category="calculus" data-difficulty="advanced">
-                        <div class="exercise-header">
-                            <span class="difficulty-badge difficulty-advanced">Advanced</span>
-                            <span class="category-badge">Calculus</span>
-                        </div>
-                        <div class="exercise-content">
-                            <h3>Derivative Applications</h3>
-                            <p>Find the maximum of f(x) = -x² + 4x + 1</p>
-                            <div class="exercise-meta">
-                                <span class="exercise-id">#EX003</span>
-                                <span class="exercise-rating">⭐ 4.3/5</span>
-                            </div>
-                        </div>
-                        <div class="exercise-footer">
-                            <button class="btn-primary" aria-label="Attempt exercise">Attempt</button>
-                            <button class="btn-secondary" aria-label="View solution">Solution</button>
-                        </div>
-                    </article>
-                </div>
-
-                <!-- Empty State -->
-                <div id="emptyState" class="empty-state" hidden>
-                    <div class="empty-state-icon">📚</div>
-                    <h3>No exercises found</h3>
-                    <p>Try adjusting your search or filters to find more exercises</p>
-                    <button class="btn-primary" id="clearFiltersBtn">Clear Filters</button>
-                </div>
-            </div>
-        </section>
-
-        <!-- Pagination -->
-        <section class="pagination-section" aria-label="Pagination">
-            <div class="container">
-                <nav class="pagination" role="navigation" aria-label="Pagination navigation">
-                    <button class="pagination-btn" id="prevBtn" aria-label="Previous page" disabled>
-                        ← Previous
-                    </button>
-                    <ul class="pagination-numbers" id="paginationNumbers">
-                        <li><button class="page-number active" data-page="1">1</button></li>
-                        <li><button class="page-number" data-page="2">2</button></li>
-                        <li><button class="page-number" data-page="3">3</button></li>
-                    </ul>
-                    <button class="pagination-btn" id="nextBtn" aria-label="Next page">
-                        Next →
-                    </button>
-                </nav>
-            </div>
-        </section>
-
-        <!-- Statistics Section -->
-        <section class="stats-section" aria-label="Exercise statistics">
-            <div class="container">
-                <h2>Your Progress</h2>
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <h3>Total Exercises</h3>
-                        <p class="stat-number">156</p>
-                    </div>
-                    <div class="stat-card">
-                        <h3>Completed</h3>
-                        <p class="stat-number">42</p>
-                    </div>
-                    <div class="stat-card">
-                        <h3>Correct Answers</h3>
-                        <p class="stat-number">38</p>
-                    </div>
-                    <div class="stat-card">
-                        <h3>Success Rate</h3>
-                        <p class="stat-number">90%</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- CTA Section -->
-        <section class="cta-section">
-            <div class="container">
-                <h2>Ready to improve your math skills?</h2>
-                <p>Start solving exercises and track your progress with detailed analytics</p>
-                <button class="btn-primary btn-large" aria-label="Start solving exercises">
-                    Start Solving Now
-                </button>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="footer" role="contentinfo">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h4>About MathX</h4>
-                    <p>Advanced mathematics learning platform with interactive exercises and solutions.</p>
-                </div>
-                <div class="footer-section">
-                    <h4>Quick Links</h4>
-                    <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="exercices.html">Exercises</a></li>
-                        <li><a href="solver.html">Solver</a></li>
-                        <li><a href="privacy.html">Privacy</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Contact</h4>
-                    <ul>
-                        <li><a href="mailto:info@mathx.com">info@mathx.com</a></li>
-                        <li><a href="tel:+1234567890">+1 (234) 567-890</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Follow Us</h4>
-                    <div class="social-links">
-                        <a href="#" aria-label="Facebook">f</a>
-                        <a href="#" aria-label="Twitter">𝕏</a>
-                        <a href="#" aria-label="LinkedIn">in</a>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 MathX Searcher. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Scripts -->
-    <script src="js/main.js" defer></script>
-    <script src="js/exercices.js" defer></script>
+    <!-- JavaScript -->
+    <script src="exercices.js"></script>
+    
+    <!-- Script pour la gestion du thème global -->
+    <script>
+        // ================= GESTION DU THÈME GLOBAL =================
+        
+        function applyGlobalTheme() {
+            // Vérifier le thème sauvegardé
+            const savedTheme = localStorage.getItem('mathx_theme');
+            const isDarkMode = localStorage.getItem('mathx_dark_mode') === 'true';
+            
+            if (savedTheme === 'dark' || isDarkMode) {
+                // Appliquer le thème dark
+                document.documentElement.setAttribute('data-theme', 'dark');
+                console.log('🌙 Thème dark appliqué (exercices.html)');
+            } else {
+                // Appliquer le thème light
+                document.documentElement.setAttribute('data-theme', 'light');
+                console.log('☀️ Thème light appliqué (exercices.html)');
+            }
+        }
+        
+        // Écouter les changements de thème depuis d'autres pages
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'mathx_theme' || e.key === 'mathx_dark_mode') {
+                console.log('🔄 Changement de thème détecté depuis une autre page');
+                applyGlobalTheme();
+            }
+        });
+        
+        // Écouter les événements personnalisés (si utilisés par profil.js)
+        window.addEventListener('themeChanged', (e) => {
+            if (e.detail && e.detail.theme) {
+                document.documentElement.setAttribute('data-theme', e.detail.theme);
+                console.log(`🎨 Thème changé via événement: ${e.detail.theme}`);
+            }
+        });
+        
+        // Appliquer le thème au chargement
+        document.addEventListener('DOMContentLoaded', function() {
+            applyGlobalTheme();
+            
+            // Ajouter un indicateur visuel du thème (optionnel pour débogage)
+            const themeIndicator = document.createElement('div');
+            themeIndicator.id = 'theme-indicator';
+            themeIndicator.style.cssText = `
+                position: fixed;
+                top: 10px;
+                left: 10px;
+                width: 20px;
+                height: 20px;
+                border-radius: 50%;
+                z-index: 9999;
+                pointer-events: none;
+                opacity: 0.3;
+            `;
+            
+            const updateThemeIndicator = () => {
+                const theme = document.documentElement.getAttribute('data-theme');
+                themeIndicator.style.background = theme === 'dark' ? '#000' : '#fff';
+                themeIndicator.style.boxShadow = theme === 'dark' 
+                    ? '0 0 10px white' 
+                    : '0 0 10px black';
+            };
+            
+            document.body.appendChild(themeIndicator);
+            updateThemeIndicator();
+            
+            // Surveiller les changements d'attribut
+            const observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    if (mutation.attributeName === 'data-theme') {
+                        updateThemeIndicator();
+                        console.log('🎨 Thème modifié en direct');
+                    }
+                });
+            });
+            
+            observer.observe(document.documentElement, {
+                attributes: true,
+                attributeFilter: ['data-theme']
+            });
+        });
+        
+        // Fonction pour forcer la mise à jour du thème (peut être appelée depuis profil.js)
+        window.updateThemeFromProfile = function(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('mathx_theme', theme);
+            localStorage.setItem('mathx_dark_mode', theme === 'dark' ? 'true' : 'false');
+            
+            // Émettre un événement pour synchroniser avec index.html
+            window.dispatchEvent(new CustomEvent('themeChanged', {
+                detail: { theme: theme }
+            }));
+            
+            console.log(`🔁 Thème synchronisé depuis profil: ${theme}`);
+        };
+        
+        // Exposer la fonction pour le profil
+        window.applyGlobalTheme = applyGlobalTheme;
+    </script>
 </body>
 </html>
