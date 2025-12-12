@@ -1,0 +1,105 @@
+Titre : Exercices de Trigonométrie - Niveau Terminale
+Auteur : Professeur Laurent Dubois
+Date : 15/03/2024
+Niveau : Terminale Mathématiques
+Thèmes : Trigonométrie, Fonctions, Équations
+Difficulté : Moyenne
+
+===========================================
+EXERCICE 1 : ÉQUATIONS TRIGONOMÉTRIQUES
+===========================================
+
+Résoudre dans ℝ les équations suivantes :
+
+1) $$ \cos(x) = \frac{\sqrt{2}}{2} $$
+2) $$ \sin(2x) = \frac{1}{2} $$
+3) $$ \tan(x) = \sqrt{3} $$
+4) $$ 2\cos^2(x) - 3\cos(x) + 1 = 0 $$
+
+===========================================
+EXERCICE 2 : SIMPLIFICATIONS
+===========================================
+
+Simplifier les expressions suivantes :
+
+1) $$ A = \frac{\sin(x)}{\cos(x)} + \frac{\cos(x)}{\sin(x)} $$
+2) $$ B = \sin^2(x) + \cos^2(x) $$
+3) $$ C = \frac{1 - \cos(2x)}{2\sin^2(x)} $$
+4) $$ D = \cos(a+b)\cos(a-b) $$
+
+===========================================
+EXERCICE 3 : FORMULES D'ADDITION
+===========================================
+
+En utilisant les formules d'addition, démontrer que :
+
+1) $$ \cos(a+b) = \cos a \cos b - \sin a \sin b $$
+2) $$ \sin(a+b) = \sin a \cos b + \cos a \sin b $$
+3) $$ \tan(a+b) = \frac{\tan a + \tan b}{1 - \tan a \tan b} $$
+
+===========================================
+EXERCICE 4 : PROBLÈME CONCRET
+===========================================
+
+Un échelle de longueur 5 m est appuyée contre un mur. 
+Le pied de l'échelle est à 3 m du mur.
+
+1) Calculer l'angle que fait l'échelle avec le sol.
+2) À quelle hauteur l'échelle atteint-elle le mur ?
+3) Si on éloigne le pied de 1 m supplémentaire, 
+   quelle est la nouvelle hauteur atteinte ?
+
+===========================================
+EXERCICE 5 : FONCTIONS TRIGONOMÉTRIQUES
+===========================================
+
+Soit la fonction $$ f(x) = 2\sin(3x - \frac{\pi}{4}) $$
+
+1) Déterminer la période de f.
+2) Donner l'amplitude.
+3) Résoudre $$ f(x) = 1 $$
+4) Tracer l'allure de la courbe sur $$ [0, 2\pi] $$
+
+===========================================
+CORRIGÉ INDICATIF
+===========================================
+
+Exercice 1 :
+1) $$ x = \frac{\pi}{4} + 2k\pi $$ ou $$ x = -\frac{\pi}{4} + 2k\pi $$
+2) $$ x = \frac{\pi}{12} + k\pi $$ ou $$ x = \frac{5\pi}{12} + k\pi $$
+3) $$ x = \frac{\pi}{3} + k\pi $$
+4) $$ \cos(x) = 1 $$ ou $$ \cos(x) = \frac{1}{2} $$
+
+Exercice 2 :
+1) $$ A = \frac{1}{\sin x \cos x} $$
+2) $$ B = 1 $$
+3) $$ C = 1 $$
+4) $$ D = \cos^2 a - \sin^2 b $$
+
+Exercice 4 :
+1) $$ \theta = \arccos(\frac{3}{5}) \approx 53.13^\circ $$
+2) $$ h = 4 \text{ m} $$
+3) $$ h' = \sqrt{25 - 16} = 3 \text{ m} $$
+
+===========================================
+FORMULES UTILES
+===========================================
+
+• $$ \cos^2 x + \sin^2 x = 1 $$
+• $$ \tan x = \frac{\sin x}{\cos x} $$
+• $$ \cos(2x) = 2\cos^2 x - 1 = 1 - 2\sin^2 x $$
+• $$ \sin(2x) = 2\sin x \cos x $$
+• Période : $$ \cos(ax) $$ et $$ \sin(ax) $$ : $$ T = \frac{2\pi}{|a|} $$
+
+===========================================
+MOTS-CLÉS
+===========================================
+
+trigonométrie, terminale, cosinus, sinus, tangente, équations, formules, addition, fonctions, exercices, corrigé, mathématiques
+
+===========================================
+DURÉE ESTIMÉE
+===========================================
+
+Temps de résolution : 45 minutes
+Auto-évaluation : /20 points
