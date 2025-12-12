@@ -1,0 +1,111 @@
+EXERCICE D'ALGÈBRE LINÉAIRE - NIVEAU LICENCE 1
+
+Titre : Diagonalisation de Matrices
+Auteur : Professeur Martin
+Date : 15/03/2024
+Niveau : Licence 1 Mathématiques
+Thèmes : Algèbre linéaire, Valeurs propres, Vecteurs propres
+
+===========================================
+EXERCICE 1 : DIAGONALISATION
+===========================================
+
+Soit la matrice A définie par :
+A = [[2, 1],
+     [1, 2]]
+
+1) Calculer les valeurs propres de A.
+2) Déterminer les vecteurs propres associés.
+3) La matrice A est-elle diagonalisable ?
+4) Si oui, trouver une matrice P inversible et une matrice D diagonale telles que A = P D P^{-1}.
+
+===========================================
+SOLUTION DÉTAILLÉE
+===========================================
+
+1) Calcul des valeurs propres :
+   Le polynôme caractéristique est :
+   P(λ) = det(A - λI) = (2-λ)² - 1 = λ² - 4λ + 3
+   Les racines sont λ₁ = 1 et λ₂ = 3.
+
+2) Vecteurs propres :
+   Pour λ₁ = 1 :
+   (A - I)X = 0 ⇒ [[1, 1], [1, 1]]X = 0
+   ⇒ x + y = 0 ⇒ v₁ = (1, -1)
+
+   Pour λ₂ = 3 :
+   (A - 3I)X = 0 ⇒ [[-1, 1], [1, -1]]X = 0
+   ⇒ -x + y = 0 ⇒ v₂ = (1, 1)
+
+3) La matrice A est diagonalisable car elle possède 2 valeurs propres distinctes.
+
+4) Matrices P et D :
+   P = [[1, 1], [-1, 1]]
+   D = [[1, 0], [0, 3]]
+
+   On vérifie : A = P D P^{-1}
+
+===========================================
+EXERCICE 2 : APPLICATIONS
+===========================================
+
+Soit f l'endomorphisme de ℝ² dont la matrice dans la base canonique est A.
+
+1) Calculer A^n pour tout n ∈ ℕ.
+2) En déduire l'expression de f^n(x,y).
+
+INDICATIONS :
+• Utiliser la diagonalisation : A^n = P D^n P^{-1}
+• D^n = [[1^n, 0], [0, 3^n]] = [[1, 0], [0, 3^n]]
+
+===========================================
+EXERCICE 3 : GÉNÉRALISATION
+===========================================
+
+Soit la matrice M = [[a, b], [b, a]] avec a, b ∈ ℝ.
+
+1) Montrer que M est toujours diagonalisable.
+2) Exprimer ses valeurs propres en fonction de a et b.
+3) Donner une base de vecteurs propres.
+
+FORMULES UTILES :
+• det(M) = a² - b²
+• trace(M) = 2a
+• Valeurs propres : λ = a ± b
+
+===========================================
+PROBLÈME AVANCÉ
+===========================================
+
+Étudier la suite définie par :
+X₀ = (1, 0)
+X_{n+1} = A X_n
+
+1) Exprimer X_n en fonction de n.
+2) Étudier la convergence de la suite.
+3) Interpréter géométriquement.
+
+===========================================
+RÉFÉRENCES
+===========================================
+
+[1] Algèbre linéaire, C. D. Meyer
+[2] Mathématiques pour l'informatique, G. Strang
+[3] Exercices corrigés d'algèbre, H. Cartan
+
+===========================================
+MOTS-CLÉS
+===========================================
+
+algèbre, linéaire, matrice, diagonalisation, valeurs propres, vecteurs propres, licence, exercice, corrigé, mathématiques, endomorphisme, base, canonique
+
+===========================================
+METADONNÉES POUR LA RECHERCHE
+===========================================
+
+Niveau: Licence 1
+Durée estimée: 45 minutes
+Difficulté: Moyenne
+Type: Exercice corrigé
+Chapitre: Diagonalisation
+Prérequis: Calcul matriciel, déterminants
