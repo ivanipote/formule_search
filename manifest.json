@@ -1,13 +1,13 @@
 {
   "background_color": "#06b6d4",
   "description": "✨ L'intelligence artificielle au service des mathématiques. Recherche ultra-rapide, formules instantanées, résolution intelligente. Transformez votre façon d'apprendre les maths !",
-  "dir": "ltr",
+  "dir": "auto",
   "display": "standalone",
   "name": "MATH-X-HELPER",
   "orientation": "any",
-  "scope": "/",
+  "scope": "/index.html",
   "short_name": "MATH-X-HELPER",
-  "start_url": "/",
+  "start_url": "/index.html ",
   "theme_color": "#06b6d4",
   "icons": [
     {
@@ -264,5 +264,16 @@
       "is256x256": false,
       "is192x192": false
     }
+  ],
+  "lang": "fr",
+  "shortcuts": [
+    {
+      "name": "Visuellement confortable ",
+      "url": "https://ivanipote.github.io/MathX_searcher/capture.jpg",
+      "description": "Étudier tout les math avec le style "
+    }
+  ],
+  "categories": [
+    "education"
   ]
-}
+    }
