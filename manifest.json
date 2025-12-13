@@ -1,25 +1,54 @@
 {
   "name": "MATH-X-HELPER",
-  "short_name": "MATH-X",
-  "start_url": "/",
-  
+  "short_name": "MathX",
+  "description": "Assistant mathématique intelligent avec IA. Recherche ultra-rapide de formules, résolutions étape par étape pour étudiants et professionnels.",
+  "start_url": "/MathX_searcher/",
+  "scope": "/MathX_searcher/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#06b6d4",
+  "orientation": "portrait",
+  "lang": "fr",
+  "categories": ["education", "productivity"],
   "icons": [
     {
-      "src": "/icon-192x192.png",
-      "sizes": "192x192",
-      "type": "image/png"
+      "src": "logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
     },
     {
-      "src": "/icon-512x512.png",
-      "sizes": "512x512",
-      "type": "image/png"
+      "src": "logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
     }
   ],
-  
-  "description": "Recherche ultra-rapide de formules mathématiques avec IA",
-  "background_color": "#06b6d4",
-  "theme_color": "#06b6d4",
-  "display": "standalone",
-  "orientation": "portrait",
-  "id": "/"
-}
+  "screenshots": [
+    {
+      "src": "capture.jpg",
+      "sizes": "1280x720",
+      "type": "image/jpeg",
+      "label": "Interface MATH-X-HELPER"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Rechercher",
+      "short_name": "Recherche",
+      "description": "Rechercher une formule mathématique",
+      "url": "/MathX_searcher/#search"
+    },
+    {
+      "name": "Exercices",
+      "short_name": "Pratique",
+      "description": "Accéder aux exercices",
+      "url": "/MathX_searcher/exercices.html"
+    }
+  ]
+    }
