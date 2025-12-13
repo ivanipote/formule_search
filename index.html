@@ -1,68 +1,33 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <!-- META ESSENTIELS -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- PWA ESSENTIEL - REQUIS PAR PWA BUILDER -->
+    <!-- PWA - CHEMIN CORRECT POUR GITHUB PAGES -->
     <meta name="theme-color" content="#06b6d4">
-    <link rel="manifest" href="/manifest.json">
+    <link rel="manifest" href="/MathX_searcher/manifest.json">
     
-    <!-- ICÔNES POUR PWA BUILDER -->
-    <link rel="icon" href="/icon-192x192.png" sizes="192x192" type="image/png">
-    <link rel="icon" href="/icon-512x512.png" sizes="512x512" type="image/png">
-    <link rel="apple-touch-icon" href="/apple-touch-icon-180x180.png">
+    <!-- ICÔNES existantes -->
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" href="logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="logo.png">
     
-    <!-- META PWA/APP OBLIGATOIRES -->
+    <!-- META PWA -->
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="MATH-X-HELPER">
     
-    <!-- TITRE ET DESCRIPTION -->
     <title>MATH-X-HELPER - Intelligence Mathématique IA</title>
     <meta name="description" content="Assistant mathématique intelligent avec IA. Recherche ultra-rapide de formules, résolutions étape par étape.">
     
-    <!-- OPEN GRAPH (optionnel mais recommandé) -->
-    <meta property="og:title" content="MATH-X-HELPER - IA Mathématique">
-    <meta property="og:description" content="Assistant mathématique intelligent avec IA">
-    <meta property="og:image" content="https://mathx-searcher.vercel.app/icon-512x512.png">
-    <meta property="og:url" content="https://mathx-searcher.vercel.app/">
-    <meta property="og:type" content="website">
-    
-    <!-- STYLES -->
+    <!-- Styles -->
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="logique.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-</head>
-    
-<body>
-    
-    <!-- Header -->
-    <header class="header">
-        <div class="header-container">
-            <a href="index.html" class="logo-square">
-                <img src="logo.png" alt="mathX_searcher" class="logo-img">
-            </a>
-            
-            <!-- Barre de recherche -->
-            <div class="search-bar">
-                <input type="text" 
-                       class="search-input" 
-                       id="mainSearchInput"
-                       placeholder="Rechercher une formule... (ex: Pythagore, dérivée, intégrale)"
-                       autocomplete="off"
-                       spellcheck="false">
-                <div class="search-suggestions" id="searchSuggestions"></div>
-            </div>
-            
-            <button class="sidebar-toggle" id="sidebarToggle" aria-label="Ouvrir le menu">
-                <i class="fas fa-bars"></i>
-            </button>
-        </div>
-    </header>
+        </head>
 
     <!-- Filtres -->
     <div class="filters-bar">
