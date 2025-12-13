@@ -1,0 +1,121 @@
+{
+  "name": "MATH-X-HELPER",
+  "short_name": "MATH-X",
+  "description": "✨ Intelligence Mathématique par MEGANE23 - Recherche ultra-rapide de formules avec IA",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone"],
+  "orientation": "portrait-primary",
+  "background_color": "#0f172a",
+  "theme_color": "#06b6d4",
+  "categories": ["education", "productivity", "utilities"],
+  "lang": "fr",
+  "dir": "ltr",
+  "prefer_related_applications": false,
+  
+  "icons": [
+    {
+      "src": "/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  
+  "screenshots": [
+    {
+      "src": "/screenshot-desktop.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Interface desktop MATH-X-HELPER"
+    },
+    {
+      "src": "/screenshot-mobile.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Interface mobile MATH-X-HELPER"
+    }
+  ],
+  
+  "shortcuts": [
+    {
+      "name": "Rechercher formule",
+      "short_name": "Recherche",
+      "description": "Recherche rapide de formules",
+      "url": "/?source=pwa&action=search",
+      "icons": [{ "src": "/shortcut-search.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Exercices",
+      "short_name": "Exercices",
+      "description": "Accéder aux exercices",
+      "url": "/exercices.html?source=pwa",
+      "icons": [{ "src": "/shortcut-exercises.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Profil",
+      "short_name": "Profil",
+      "description": "Voir mon profil",
+      "url": "/profil.html?source=pwa",
+      "icons": [{ "src": "/shortcut-profile.png", "sizes": "96x96" }]
+    }
+  ],
+  
+  "related_applications": [],
+  
+  "protocol_handlers": [
+    {
+      "protocol": "web+mathx",
+      "url": "/?formula=%s"
+    }
+  ],
+  
+  "edge_side_panel": {
+    "preferred_width": 400
+  }
+}
